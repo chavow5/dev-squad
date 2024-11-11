@@ -27,3 +27,17 @@ El proyecto, desarrollado por el Grupo N° 8, con enfoque en la creación de un 
 * Celeste Orellano
 * Alejandro Romero
 * Cecilia Bolado
+
+## Esctructura de Carpeta
+* 📦Api
+    ├─ 📜.env
+    ├─ 📜app.js
+    ├─ 📜auth.js
+    ├─ 📜db.js
+    ├─ 📜package-lock.json
+    ├─ 📜package.json
+    ├─ 📜readme.md
+    └─ 📜usuarios.js
+
+* 📦Database
+    └─ 📜db-lab4.sql
