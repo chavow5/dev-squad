@@ -2,7 +2,7 @@
 Trabajo Final de Laboratorio 4 de la Universidad Tecnológica Nacional (UTN), Facultad de La Rioja.
 El proyecto, desarrollado por el Grupo N° 8, con enfoque en la creación de un sistema de peaje, aplicando conocimientos de programación durante la Tencicatura en Programacion. 
 
-# ViaPass
+# Dev-Squad - ViaPass
 (Foto)
 
 ## Fase Beta
@@ -22,14 +22,15 @@ El proyecto, desarrollado por el Grupo N° 8, con enfoque en la creación de un 
     npm run dev
 ```
 
-# integrantes 
+# integrantes - Dev-Squad
 * David Ramirez - [@Chavow5](https://www.github.com/chavow5)
 * Celeste Orellano
 * Alejandro Romero
 * Cecilia Bolado
 
 ## Esctructura de Carpeta
-* 📦Api
+```bash
+📦Api
     ├─ 📜.env
     ├─ 📜app.js
     ├─ 📜auth.js
@@ -39,5 +40,6 @@ El proyecto, desarrollado por el Grupo N° 8, con enfoque en la creación de un 
     ├─ 📜readme.md
     └─ 📜usuarios.js
 
-* 📦Database
+ 📦Database
     └─ 📜db-lab4.sql
+```
