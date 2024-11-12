@@ -9,7 +9,7 @@ const router = express.Router();
 // GET /usuarios
 // Consultar por todos los usuarios
 router.get("/", async (req, res) => {
-  const [usuarios] = await db.execute("select * from usuarios");
+  const [usuarios] = await db.execute("select id,username,rol from usuarios");
   res.send({ usuarios });
 });
 
