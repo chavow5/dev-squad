@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { conectarDB, db } from "./db.js";
-// import { db } from "./db.js";
+import { conectarDB, db } from "./db.js"; // import { db } from "./db.js";
 import usuariosRouter from "./usuarios.js";
 import authRouter from "./auth.js";
 
@@ -10,16 +9,13 @@ conectarDB();
 console.log("Conectado a base de datos");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT ?? 3000; // por si el puerto 3000 esta en uso busca otra puerto
 
 // interpretar JSON en body y habilitar cors
 app.use(express.json());
 app.use(cors());
 
-// rutas
-// app.get("/", (_, res) => {
-//   res.send("Hola mundo");
-// });
+// mostrar ruta en el local host
 app.get("/", async (_, res) => {
     const [usuarios] = await db.execute("select id,username,rol from usuarios");
     res.send({ usuarios });

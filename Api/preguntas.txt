@@ -1,0 +1,5 @@
+preguntar sobre la base de datos
+sobre la tabla de perfiles y usuarios 
+
+si se puede poner en una sola tabla o tiene que ser en tabla separadas la de usuario y perfiles
+
