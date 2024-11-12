@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+// import React from 'react'; //version +17  npm list react     
 import axios from 'axios';
 
 const LoginPage = () => {
@@ -14,7 +15,7 @@ const LoginPage = () => {
       localStorage.setItem('token', token); // Guardamos el token en localStorage
       setError(null);
       alert('Login exitoso');
-    } catch (err) {
+    } catch {
       setError('Usuario o contraseña incorrecta');
     }
   };
