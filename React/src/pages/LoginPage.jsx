@@ -1,5 +1,5 @@
-import { useState } from 'react';
 // import React from 'react'; //version +17  npm list react     
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,18 +12,23 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      // Enviar solicitud desde la Api Auth.js
       const response = await axios.post('http://localhost:3000/auth/login', { username, password });
-      const token = response.data.token;
-      localStorage.setItem('token', token); // Guardamos el token en localStorage
+      console.log('Token recibido:', response.data.token); // Mostrar el token en la consola
+      
+      // Guardar el token en el almacenamiento local
+      localStorage.setItem('token', response.data.token);
       setError(null);
-      alert('Bienvenido ',{username},' al sistema de peaje');
-    } catch {
+      alert(`Bienvenido ${username} al sistema de peaje`);
+      navigate('/home'); // Redirige a la página de inicio o dashboard
+    } catch (error) {
+      console.error('Error en la conexión:', error); // Mostrar cualquier error en la consola
       setError('Usuario o contraseña incorrecta');
     }
   };
 
   const handleRegisterClick = () => {
-    navigate('/register'); // Redirige a la página de registro
+    navigate('/register');
   };
 
   return (
@@ -50,7 +55,7 @@ const LoginPage = () => {
         <p>¿No tienes una cuenta?</p>
         <button 
           onClick={handleRegisterClick} 
-          style={{ color: 'blue', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}
+          style={{ color: 'blue', textDecoration: 'underline' }}
         >
           Crear una cuenta
         </button>
