@@ -4,6 +4,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
+import Contacto from './pages/Contacto';
+import Aboutus from './pages/Aboutus';
 
 const App = () => (
   <Router>
@@ -12,6 +14,9 @@ const App = () => (
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/aboutus" element={<Aboutus />} />
+        <Route path="/contacto" element={<Contacto />} />
+        
       </Routes>
     </main>
     <Footer />
