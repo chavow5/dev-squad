@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import Contacto from './pages/Contacto';
 import Aboutus from './pages/Aboutus';
+import ViaPass from './pages/ViaPass';
 
 const App = () => (
   <Router>
@@ -16,6 +17,7 @@ const App = () => (
         <Route path="/login" element={<LoginPage />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/viapass" element={<ViaPass />} />
         
       </Routes>
     </main>

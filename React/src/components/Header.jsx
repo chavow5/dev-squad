@@ -10,6 +10,7 @@ const Header = () => (
       <Link to="/login">Login</Link>
       <Link to="/aboutus">Sobre Nosotros</Link>
       <Link to="/contacto">Contacto</Link>
+      <Link to="/viapass">ViaPass</Link>
 
     </nav>
   </header>
