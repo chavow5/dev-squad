@@ -13,6 +13,23 @@ router.get("/", async (req, res) => {
   res.send({ usuarios });
 });
 
+// GET /usuarios/:id
+// Consultar un usuario por su ID
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [usuario] = await db.execute("SELECT id, username, rol FROM usuarios WHERE id = ?", [id]);
+    if (usuario.length === 0) {
+      return res.status(404).send({ message: "Usuario no encontrado" });
+    }
+    res.send({ usuario: usuario[0] });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error al consultar el usuario" });
+  }
+});
+
+
 // POST /usuarios
 // Crear nuevo usuario
 router.post(
