@@ -1,0 +1,20 @@
+/* Color Theme Swatches in Hex */
+.Climate-tech-Product-1-hex { color: #88BF50; }
+.Climate-tech-Product-2-hex { color: #76A646; }
+.Climate-tech-Product-3-hex { color: #DFF2B6; }
+.Climate-tech-Product-4-hex { color: #EAF2CE; }
+.Climate-tech-Product-5-hex { color: #0D0D0D; }
+
+/* Color Theme Swatches in RGBA */
+.Climate-tech-Product-1-rgba { color: rgba(135, 191, 80, 1); }
+.Climate-tech-Product-2-rgba { color: rgba(117, 165, 69, 1); }
+.Climate-tech-Product-3-rgba { color: rgba(223, 242, 181, 1); }
+.Climate-tech-Product-4-rgba { color: rgba(234, 242, 205, 1); }
+.Climate-tech-Product-5-rgba { color: rgba(12, 12, 12, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Climate-tech-Product-1-hsla { color: hsla(90, 46, 53, 1); }
+.Climate-tech-Product-2-hsla { color: hsla(90, 40, 46, 1); }
+.Climate-tech-Product-3-hsla { color: hsla(78, 70, 83, 1); }
+.Climate-tech-Product-4-hsla { color: hsla(73, 58, 87, 1); }
+.Climate-tech-Product-5-hsla { color: hsla(0, 0, 5, 1); }

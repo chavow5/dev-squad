@@ -9,6 +9,10 @@ import Aboutus from './pages/Aboutus';
 import ViaPass from './pages/ViaPass';
 import RegistrarUser from './pages/RegistrarUser';
 
+//reactboostrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 const App = () => (
   <Router>
     <Header />

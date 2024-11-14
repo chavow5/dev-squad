@@ -1,0 +1,17 @@
+.navbar-black {
+    background-color: #0D0D0D; /* Fondo negro */
+  }
+  
+  /* Ajusta el color de los enlaces para que contrasten */
+  .navbar-black .nav-link {
+    color: #88BF50;  /* Texto blanco */
+    transition: color 0.3s;
+  }
+  
+  /* Cambia el color al pasar el cursor sobre los enlaces */
+  .navbar-black .nav-link:hover {
+    color: #f7f9f5; /* Gris claro al hacer hover */
+  }
+  
+
+  
