@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import Contacto from './pages/Contacto';
 import Aboutus from './pages/Aboutus';
 import ViaPass from './pages/ViaPass';
+import RegistrarUser from './pages/RegistrarUser';
 
 const App = () => (
   <Router>
@@ -18,6 +19,7 @@ const App = () => (
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/viapass" element={<ViaPass />} />
+        <Route path="/registrarusuario" element={<RegistrarUser />} />
         
       </Routes>
     </main>
