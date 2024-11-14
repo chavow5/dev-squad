@@ -27,8 +27,9 @@ const LoginPage = () => {
     }
   };
 
+  // boton de crear usuario
   const handleRegisterClick = () => {
-    navigate('/register');
+    navigate('/registrarusuario');
   };
 
   return (

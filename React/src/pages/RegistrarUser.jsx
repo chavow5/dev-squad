@@ -13,6 +13,7 @@ const RegistrarUser = () => {
     try {
       await axios.post('http://localhost:3000/usuarios', { username, password });
       console.log("Usuario creado con éxito");
+      alert("usuario Creado con Exito")
 
     } catch (err) {
       console.error("Error al crear el usuario:", err);
