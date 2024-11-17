@@ -8,6 +8,7 @@ import Contacto from './pages/Contacto';
 import Aboutus from './pages/Aboutus';
 import ViaPass from './pages/ViaPass';
 import RegistrarUser from './pages/RegistrarUser';
+import ProtectedRoute from './components/ProtectedRoute';
 
 //reactboostrap
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,6 +25,16 @@ const App = () => (
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/viapass" element={<ViaPass />} />
         <Route path="/registrarusuario" element={<RegistrarUser />} />
+
+        {/* ruta despues login */}
+        <Route 
+          path="/" 
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          } 
+        />
         
       </Routes>
     </main>

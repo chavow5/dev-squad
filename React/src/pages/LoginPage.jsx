@@ -20,7 +20,7 @@ const LoginPage = () => {
       localStorage.setItem('token', response.data.token);
       setError(null);
       alert(`Bienvenido ${username} al sistema de peaje`);
-      navigate('/home'); // Redirige a la página de inicio o dashboard
+      navigate('/'); // Redirige a la página de inicio o dashboard
     } catch (error) {
       console.error('Error en la conexión:', error); // Mostrar cualquier error en la consola
       setError('Usuario o contraseña incorrecta');
