@@ -1,50 +1,134 @@
-// agregar formulario con datos para vehiculo 
-// tipo de vehiculo, precio, metodo de pago. total 
-// agreagar boton de cargar dato 
-// boton eliminar dato 
-// boton habilitar barrera 
-// boton imprimir dato 
-// agregar boton de salir al inicio 
-// boton cerrar sesion 
+import { useState } from 'react';
 
-// import React from 'react'; //version +17  npm list react     
+const SistemaPeaje = () => {
+  //pruebas hasta conectar base de datos
+  const [vehiculo, setVehiculo] = useState({
+    tipo: '',
+    precio: '',
+    metodoPago: '',
+    total: '',
+  });
 
-const sistemaPeaje = () => (
-    <div className="contacto">
-      <h2 className="contacto-title">sistema peaje</h2>
-      
-      <section className="contacto-info">
-        <p className="contacto-description">
-          Queremos saber de ti! Ya sea para hablar sobre nuestro proyecto, la universidad, o simplemente conocer quiénes somos.
-        </p>
+  const [datos, setDatos] = useState([]);
+
+  const handleChange = (e) => {
+    setVehiculo({
+      ...vehiculo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const cargarDato = () => {
+    setDatos([...datos, vehiculo]);
+    setVehiculo({ tipo: '', precio: '', metodoPago: '', total: '' });
+  };
+
+  const eliminarDato = (index) => {
+    const nuevosDatos = datos.filter((_, i) => i !== index);
+    setDatos(nuevosDatos);
+  };
+
+  const habilitarBarrera = () => {
+    alert('¡Barrera habilitada!');
+  };
+
+  const imprimirDato = (dato) => {
+    console.log('Imprimiendo datos:', dato);
+    alert(`Datos del vehículo: \nTipo: ${dato.tipo}\nPrecio: ${dato.precio}\nMétodo de Pago: ${dato.metodoPago}\nTotal: ${dato.total}`);
+  };
+
+  const salirInicio = () => {
+    window.location.href = '/';
+  };
+
+  const cerrarSesion = () => {
+    alert('Sesión cerrada.');
+    window.location.href = '/login';
+  };
+
+  return (
+    <div className="sistema-peaje">
+      <h2 className="sistema-peaje-title">Sistema de Peaje</h2>
+      <section className="sistema-peaje-controls-login">
+        <button onClick={salirInicio}>Salir</button>
+        <button onClick={cerrarSesion}>Cerrar Sesión</button>
       </section>
-    
       
-      {/* Formulario de contacto  - en caso de tener tiempo usar envio de email  */}
-      <section className="contacto-form-section">
-        <h3 className="contacto-subtitle">Envíanos un mensaje</h3>
-        <form className="contacto-form">
-          <label className="contacto-form-label">
-            Nombre y Apellido:
-            <input type="text" name="name" className="contacto-form-input" placeholder="Tu nombre completo" required />
+      {/* Formulario para datos del vehículo */}
+      <section className="sistema-peaje-form-section">
+        <h3>Registrar vehículo</h3>
+        <form className="sistema-peaje-form">
+        <label>
+            Categoria:
+            <select name="tipo" value={vehiculo.tipo} onChange={handleChange} required>
+              <option value="">Seleccionar</option>
+              <option value="Motocicleta">1.Motocicleta</option>
+              <option value="Automovil">2.Automovil</option>
+              <option value="Camioneta">3.Camioneta</option>
+              <option value="Camion">4.Camion</option>
+            </select>
           </label>
-          
-          <label className="contacto-form-label">
-            Correo electrónico:
-            <input type="email" name="email" className="contacto-form-input" placeholder="Tu correo" required />
+          <label>
+            Precio:
+            <input
+              type="number"
+              name="precio"
+              value={vehiculo.precio}
+              onChange={handleChange}
+              placeholder="Precio del peaje"
+              required
+            />
           </label>
-          
-          <label className="contacto-form-label">
-            Mensaje:
-            <textarea name="message" className="contacto-form-textarea" placeholder="Escribe tu mensaje" required />
+          <label>
+            Método de pago:
+            <select name="metodoPago" value={vehiculo.metodoPago} onChange={handleChange} required>
+              <option value="">Seleccionar</option>
+              <option value="Efectivo">Efectivo</option>
+              <option value="Tarjeta">Tarjeta</option>
+            </select>
           </label>
-          
-          <button type="submit" className="contacto-form-button">Enviar</button>
+          <label>
+            Total:
+            <input
+              type="number"
+              name="total"
+              value={vehiculo.total}
+              onChange={handleChange}
+              placeholder="Total a pagar"
+              required
+            />
+          </label>
+          <button type="button" onClick={cargarDato}>
+            Cargar Datos
+          </button>
         </form>
       </section>
-      
+
+      {/* Botones de control */}
+      <section className="sistema-peaje-controls">
+        <button onClick={habilitarBarrera}>Habilitar Barrera</button>
+      </section>
+    
+     {/* Listado de datos */}
+     <section className="sistema-peaje-list-section">
+        <h3>Datos registrados</h3>
+        {datos.length > 0 ? (
+          <ul>
+            {datos.map((dato, index) => (
+              <li key={index}>
+                {`Tipo: ${dato.tipo}, Precio: ${dato.precio}, Método de Pago: ${dato.metodoPago}, Total: ${dato.total}`}
+                <button onClick={() => eliminarDato(index)}>Eliminar</button>
+                <button onClick={() => imprimirDato(dato)}>Imprimir</button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No hay datos registrados.</p>
+        )}
+      </section>
+    
     </div>
   );
-  
-  export default sistemaPeaje;
-  
+};
+
+export default SistemaPeaje;
