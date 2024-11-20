@@ -19,11 +19,12 @@ const LoginPage = () => {
       // Guardar el token en el almacenamiento local
       localStorage.setItem('token', response.data.token);
       setError(null);
+      //pagina del sistema de peaje
       alert(`Bienvenido ${username} al sistema de peaje`);
-      navigate('/home'); // Redirige a la página de inicio o dashboard
+      navigate('/sistemapeaje'); // Redirige a la página de inicio o dashboard
     } catch (error) {
       console.error('Error en la conexión:', error); // Mostrar cualquier error en la consola
-      setError('Usuario o contraseña incorrecta');
+      setError('Usuario o contraseña incorrecta'); 
     }
   };
 

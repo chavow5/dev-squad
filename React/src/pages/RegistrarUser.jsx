@@ -7,8 +7,6 @@ const RegistrarUser = () => {
   const [password, setPassword] = useState('');
   const [confirmarPassword, setConfirmarPassword] = useState('');
   const navigate = useNavigate();
-//   const [error, setError] = useState(null);
-//   const [success, setSuccess] = useState(null);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -27,6 +25,7 @@ const RegistrarUser = () => {
 
     } catch (err) {
       console.error("Error al crear el usuario:", err);
+      alert("la contraseña es muy corta")
     }
   };
 

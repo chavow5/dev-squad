@@ -8,6 +8,7 @@ import Contacto from './pages/Contacto';
 import Aboutus from './pages/Aboutus';
 import ViaPass from './pages/ViaPass';
 import RegistrarUser from './pages/RegistrarUser';
+import SistemaPeaje from './pages/SitemaPeaje';
 
 const App = () => (
   <Router>
@@ -21,6 +22,10 @@ const App = () => (
         <Route path="/viapass" element={<ViaPass />} />
         <Route path="/registrarusuario" element={<RegistrarUser />} />
         
+
+        {/* ocultar pagina, ver despues de login  */}
+        <Route path="/sistemapeaje" element={<SistemaPeaje />} />
+
       </Routes>
     </main>
     <Footer />
