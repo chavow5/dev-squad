@@ -1,4 +1,4 @@
-// import React from 'react';
+// import React from 'react'; version +17
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -8,7 +8,10 @@ import Contacto from './pages/Contacto';
 import Aboutus from './pages/Aboutus';
 import ViaPass from './pages/ViaPass';
 import RegistrarUser from './pages/RegistrarUser';
-import SistemaPeaje from './pages/SitemaPeaje';
+import SistemaPeaje from './pages/SistemaPeaje';
+
+//auth.jsx
+import { AuthProvider, AuthPage } from "./services/Auth";
 
 const App = () => (
   <Router>
@@ -23,8 +26,16 @@ const App = () => (
         <Route path="/registrarusuario" element={<RegistrarUser />} />
         
 
-        {/* ocultar pagina, ver despues de login  */}
-        <Route path="/sistemapeaje" element={<SistemaPeaje />} />
+         {/* ocultar pagina, ver despues de login  */}
+        {/* <Route path="/sistemapeaje" element={<SistemaPeaje />} />  */}
+        <Route
+            path="/sistemapeaje"
+            element={
+              <AuthPage>
+                <SistemaPeaje />
+              </AuthPage>
+            }
+          />
 
       </Routes>
     </main>

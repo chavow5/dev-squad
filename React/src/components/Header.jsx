@@ -12,6 +12,7 @@ const Header = () => (
       <Link to="/aboutus">Sobre Nosotros</Link>
       <Link to="/contacto">Contacto</Link>
       <Link to="/viapass">ViaPass</Link>
+      <Link to="/sistemapeaje">Sistema Peaje</Link>
 
     </nav>
   </header>

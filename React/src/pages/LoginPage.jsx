@@ -1,14 +1,19 @@
 // import React from 'react'; //version +17  npm list react     
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../services/Auth";
+
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
+
+  /* vieja forma con token
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -27,9 +32,30 @@ const LoginPage = () => {
       setError('Usuario o contraseña incorrecta'); 
     }
   };
+  */
+
+  const iniciarSesion = async (e) => {
+    e.preventDefault();
+    setError(null);
+    await login(
+      username,
+      password,
+      () => {
+        alert(`Bienvenido ${username} al sistema de peaje`);
+        navigate("/sistemapeaje");
+      },
+      (err) => {
+        alert(`Credenciales invalidas reintentar`);
+        setError(err);
+      }
+    );
+  };
+
+
+
 
   // boton de crear usuario
-  const handleRegisterClick = () => {
+  const registarUsuario = () => {
     navigate('/registrarusuario');
   };
 
@@ -37,7 +63,7 @@ const LoginPage = () => {
     <div>
       <h2>Iniciar Sesión</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleLogin}>
+      <form onSubmit={iniciarSesion}>
         <input 
           type="text" 
           placeholder="Username" 
@@ -56,7 +82,7 @@ const LoginPage = () => {
       <div style={{ marginTop: '20px' }}>
         <p>¿No tienes una cuenta?</p>
         <button 
-          onClick={handleRegisterClick} 
+          onClick={registarUsuario} 
           style={{ color: 'blue', textDecoration: 'underline' }}
         >
           Crear una cuenta

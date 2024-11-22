@@ -12,12 +12,16 @@ const Footer = () => (
           <li><a href="/login" className="footer-link">login</a></li>
           <li><a href="/aboutus" className="footer-link">Sobre Nosotros</a></li>
           <li><a href="/contacto" className="footer-link">Contacto</a></li>
+          <li><a href="/sistemapeaje" className="footer-link">Sistema Peaje</a></li>
         </ul>
       </nav>
       
       {/* redes sociales */}
       <div className="footer-social">
         <a href="https://github.com/chavow5/dev-squad" target="_blank" rel="noopener noreferrer" className="footer-social-link">Github Proyecto</a>
+      </div>
+      <div className="footer-social">
+        <a href="https://www.linkedin.com/in/david-ramirez-031015253/" target="_blank" rel="noopener noreferrer" className="footer-social-link">David Ramirez</a>
       </div>
     </div>
   </footer>
