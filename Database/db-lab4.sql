@@ -1,12 +1,10 @@
--- data import o consulta de sql file  
-
-CREATE DATABASE  IF NOT EXISTS `db-lab4` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE  IF NOT EXISTS `db-lab4` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db-lab4`;
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: db-lab4
+-- Host: localhost    Database: db-lab4
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.28-MariaDB
+-- Server version	8.0.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -20,29 +18,28 @@ USE `db-lab4`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `precios`
+-- Table structure for table `historial`
 --
 
-DROP TABLE IF EXISTS `precios`;
+DROP TABLE IF EXISTS `historial`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `precios` (
-  `id_precios` int(11) NOT NULL AUTO_INCREMENT,
-  `categoria_precio` varchar(45) NOT NULL,
-  `precio_precio` decimal(10,0) NOT NULL,
-  `fecha_act_precio` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_precios`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `historial` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fecha_peaje` timestamp NOT NULL,
+  `cobros` int NOT NULL,
+  `vehiculos` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `precios`
+-- Dumping data for table `historial`
 --
 
-LOCK TABLES `precios` WRITE;
-/*!40000 ALTER TABLE `precios` DISABLE KEYS */;
-INSERT INTO `precios` VALUES (1,'Autos',1000,'2024-11-12 04:46:12'),(2,'Motos',500,'2024-11-12 04:46:12'),(3,'Camioneta',1500,'2024-11-12 04:46:12'),(4,'Camiones',2000,'2024-11-12 04:46:12'),(5,'Auto + Trailer',1500,'2024-11-12 04:46:12'),(6,'Camioneta + Trailer',2500,'2024-11-12 04:46:12');
-/*!40000 ALTER TABLE `precios` ENABLE KEYS */;
+LOCK TABLES `historial` WRITE;
+/*!40000 ALTER TABLE `historial` DISABLE KEYS */;
+/*!40000 ALTER TABLE `historial` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -53,14 +50,21 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(25) NOT NULL,
-  `password` varchar(150) NOT NULL,
-  `rol` varchar(45) DEFAULT 'usuario',
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(25) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `rol` varchar(45) COLLATE utf8mb4_general_ci DEFAULT 'usuario',
+  `dni_usuario` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `mail_usuario` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `telefono_usuario` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `fecha_nac_usuario` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
-  UNIQUE KEY `password_UNIQUE` (`password`)
+  UNIQUE KEY `password_UNIQUE` (`password`),
+  UNIQUE KEY `dni_usuario_UNIQUE` (`dni_usuario`),
+  UNIQUE KEY `telefono_usuario_UNIQUE` (`telefono_usuario`),
+  UNIQUE KEY `mail_usuario_UNIQUE` (`mail_usuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -70,7 +74,6 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Davidramirez5','$2b$10$1mGnR/xVCDBWmsWg11A/E.jnitz8c0AL3Z2bhxTVcvH2k2OrtxLr2','usuario'),(2,'Davidramirez6','$2b$10$pJog2Zt2euFJf15UVxrhf.NHkckgLoknWXsS14nRNof/VR0a9dSAO','usuario'),(3,'Davidramirez7','$2b$10$t9RdPTlUkIqsQJhnJv5Jpe1SxaikuHTXWfi2CCVqgMXoDL/X4U5DC','usuario');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,13 +85,17 @@ DROP TABLE IF EXISTS `vehiculos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vehiculos` (
-  `id_vehiculo` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo_vehiculo` varchar(45) NOT NULL,
-  `precio_vehiculo` decimal(10,0) NOT NULL,
-  `pago_vehiculo` varchar(45) NOT NULL,
-  `fecha_vehiculo` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_vehiculo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `idvehiculos` int NOT NULL AUTO_INCREMENT,
+  `tipo_vehiculo` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `precio_vehiculo` int NOT NULL,
+  `pago_vehiculo` int NOT NULL,
+  `fecha_vehiculo` timestamp NOT NULL,
+  `fecha_act_inicio` timestamp NOT NULL,
+  `categoria_precio` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`idvehiculos`),
+  UNIQUE KEY `idvehiculos_UNIQUE` (`idvehiculos`),
+  UNIQUE KEY `fecha_act_inicio_UNIQUE` (`fecha_act_inicio`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +104,6 @@ CREATE TABLE `vehiculos` (
 
 LOCK TABLES `vehiculos` WRITE;
 /*!40000 ALTER TABLE `vehiculos` DISABLE KEYS */;
-INSERT INTO `vehiculos` VALUES (1,'auto',1000,'efectivo','2024-11-12 04:37:25');
 /*!40000 ALTER TABLE `vehiculos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -110,4 +116,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-12  1:49:52
+-- Dump completed on 2024-11-24 16:34:41
