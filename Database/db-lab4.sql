@@ -39,7 +39,8 @@ CREATE TABLE `historial` (
 
 LOCK TABLES `historial` WRITE;
 /*!40000 ALTER TABLE `historial` DISABLE KEYS */;
-/*!40000 ALTER TABLE `historial` ENABLE KEYS */;
+/*!40000 ALTER TABLE `historial` ENABLE KEYS hola*/;
+
 UNLOCK TABLES;
 
 --
