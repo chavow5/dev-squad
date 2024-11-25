@@ -1,0 +1,68 @@
+:root {
+    --verde-gradient: linear-gradient(90deg, #88BF50, #76A646);
+    --verde-claro: #DFF2B6;
+    --verde-oscuro: #76A646;
+    --blanco: #FFFFFF;
+    --negro: #000000;
+}
+
+/* Estilos del Header */
+header {
+    background: var(--verde-gradient);
+    color: var(--blanco);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--verde-claro);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease-in-out;
+}
+
+header:hover {
+    background: linear-gradient(90deg, #76A646, #88BF50);
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+}
+
+header nav {
+    display: flex;
+    gap: 1rem;
+}
+
+header nav a {
+    text-decoration: none;
+    color: var(--blanco);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+header nav a:hover {
+    background-color: var(--verde-claro);
+    color: var(--negro);
+    transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
