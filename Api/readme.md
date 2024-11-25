@@ -46,7 +46,7 @@ body:
 * metodo Delete
 http://localhost:3000/usuarios/id
   
-## Prubas Crud en Thunder Client o Postman Vehiculos
+## Prubas Crud en Thunder Client o Postman VEHICULOS
 Get - Post - Put - Delete 
 
 * metodo Get
@@ -87,3 +87,39 @@ body:
 
 * metodo Delete
 http://localhost:3000/vehiculos/id
+
+## Prubas Crud en Thunder Client o Postman HISTORIAL
+Get - Post - Put - Delete 
+
+* metodo Get
+http://localhost:3000/historial
+
+* metodo Get por ID
+http://localhost:3000/historial/id
+
+* metodo Post
+http://localhost:3000/historial
+```bash 
+body:
+{
+  "cobros": 500,
+  "id_vehiculo": 1,
+  "username": "Davidramirez1" #usuario en db
+}
+   // te crea el POST
+```
+
+* metodo Put 
+http://localhost:3000/historial/id
+```bash 
+body:
+{
+  "cobros": 500,
+  "id_vehiculo": 1,
+  "username": "Davidramirez1" #usuario en db
+}
+   // actualizar datos de usuarios
+```
+
+* metodo Delete
+http://localhost:3000/historial/id

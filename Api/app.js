@@ -4,7 +4,7 @@ import { conectarDB, db } from "./db.js";  // la función y la DB
 import authRouter from "./auth.js";
 import usuariosRouter from "./usuarios.js";
 import vehiculosRouter from "./vehiculos.js"; 
-import historialRouter from "./historial.js"; 
+import historialRouter from "./historial.js";
 
 // Conectar a DB
 conectarDB();
