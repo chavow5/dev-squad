@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Variables de color */
+:root {
+    --verde-medio: #88BF50;
+    --verde-claro: #DFF2B6;
+    --verde-suave: #EAF2CE;
+    --negro: #0D0D0D;
+    --blanco: #FFFFFF;
+    --gris-oscuro: #333333;
+    --transicion: 0.3s ease;
+}
+
+/* Estilos del Footer */
+footer {
+    background-color: var(--verde-claro);
+    color: var(--verde-claro);
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+footer .footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+footer h3 {
+    color: var(--verde-medio);
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+footer p, footer a {
+    color: var(--negro);
+    font-size: 1rem;
+    text-decoration: none;
+    transition: color var(--transicion);
+}
+
+footer a:hover {
+    color: var(--verde-medio);
+}
+
+footer .social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+footer .social-icons a {
+    color: var(--verde-claro);
+    font-size: 1.5rem;
+    transition: color var(--transicion), transform var(--transicion);
+}
+
+footer .social-icons a:hover {
+    color: var(--verde-medio);
+    transform: scale(1.2);
+}
+
+footer .newsletter input[type="email"] {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+footer .newsletter button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--verde-medio);
+    color: var(--blanco);
+    cursor: pointer;
+    transition: background-color var(--transicion), transform var(--transicion);
+}
+
+footer .newsletter button:hover {
+    background-color: var(--verde-oscuro);
+    transform: scale(1.05);
+}
+
+footer .bottom-bar {
+    grid-column: 1 / -1;
+    text-align: center;
+    border-top: 1px solid var(--gris-oscuro);
+    padding-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--verde-claro);
+}
