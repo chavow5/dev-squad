@@ -14,17 +14,35 @@ Get - Post - Put - Delete
 * metodo Get
 http://localhost:3000/usuarios
 
+* metodo Get por ID
+http://localhost:3000/usuarios/id
+
 * metodo Post
 http://localhost:3000/usuarios
 ```bash 
 body:
 {
-    "username": "davidramirez4",
-    "password": "David1234"
-  } // te crea el post con id, rol y contraseña hasheada 
+    "username": "Davidramirez",
+    "password": "Davidramirez",
+    "rol": "usuario",
+    "mail_usuario": "david@gmail.com"
+  }
+   // te crea el POST
 ```
 
 * metodo Put 
+http://localhost:3000/usuarios/id
+```bash 
+body:
+{
+    "username": "Davidramirez",
+    "password": "Davidramirez",
+    "rol": "usuario",
+    "mail_usuario": "david@gmail.com"
+  }
+   // actualizar datos de usuarios
+```
 
 * metodo Delete
+http://localhost:3000/usuarios/id
   
