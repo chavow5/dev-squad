@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `cabinas`
+--
+
+DROP TABLE IF EXISTS `cabinas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cabinas` (
+  `id_cabina` int NOT NULL AUTO_INCREMENT,
+  `nombre` int NOT NULL,
+  `ubicacion` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `fecha_creacion` timestamp NOT NULL,
+  PRIMARY KEY (`id_cabina`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cabinas`
+--
+
+LOCK TABLES `cabinas` WRITE;
+/*!40000 ALTER TABLE `cabinas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cabinas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `historial`
 --
 
@@ -23,13 +48,19 @@ DROP TABLE IF EXISTS `historial`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historial` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id_historial` int NOT NULL AUTO_INCREMENT,
   `fecha_peaje` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `cobros` int NOT NULL,
+  `id_cabina` int DEFAULT NULL,
   `id_vehiculo` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_historial_vehiculos` (`id_vehiculo`),
-  CONSTRAINT `fk_historial_vehiculos` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculos` (`idvehiculos`) ON DELETE CASCADE ON UPDATE CASCADE
+  `id_usuario` int DEFAULT NULL,
+  `monto_pagado` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id_historial`),
+  KEY `id_cabina_idx` (`id_cabina`),
+  KEY `id_vehiculo` (`id_vehiculo`),
+  KEY `id_usuario_idx` (`id_usuario`),
+  CONSTRAINT `id_cabina` FOREIGN KEY (`id_cabina`) REFERENCES `cabinas` (`id_cabina`),
+  CONSTRAINT `id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
+  CONSTRAINT `id_vehiculo` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculos` (`id_vehiculos`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -40,7 +71,6 @@ CREATE TABLE `historial` (
 LOCK TABLES `historial` WRITE;
 /*!40000 ALTER TABLE `historial` DISABLE KEYS */;
 /*!40000 ALTER TABLE `historial` ENABLE KEYS */;
-
 UNLOCK TABLES;
 
 --
@@ -51,15 +81,17 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id_usuario` int NOT NULL AUTO_INCREMENT,
   `username` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre_completo` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `rol` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'usuario',
-  `dni_usuario` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `mail_usuario` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `telefono_usuario` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `fecha_nac_usuario` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `rol` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'usuario',
+  `dni` int DEFAULT NULL,
+  `fecha_nac` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `mail` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `telefono` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `domicilio` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -70,7 +102,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Ceciliabolado1','$2b$10$qS7wnjSWHFszgiIm3k0b3O5SZt7ou2VzohF9onGGD3uY5HEnZG89q','usuario',NULL,NULL,NULL,NULL),(2,'Ceciliabolado2','$2b$10$T8VOpTGrmo08Ze33oAWOIO77MwxS8LG7uJhniDSaFB8eSzxew2b.e','usuario',NULL,NULL,NULL,NULL),(3,'Ceciliabolado3','$2b$10$kZgUcFO4Z5LgyQ8qNfQ/4eOMYrnWvGBdMwUifcX1DS8uI5XSNrPdu','usuario',NULL,NULL,NULL,NULL);
+INSERT INTO `usuarios` VALUES (1,'Ceciliabolado1',NULL,'$2b$10$qS7wnjSWHFszgiIm3k0b3O5SZt7ou2VzohF9onGGD3uY5HEnZG89q','usuario',NULL,NULL,NULL,NULL,NULL),(2,'Ceciliabolado2',NULL,'$2b$10$T8VOpTGrmo08Ze33oAWOIO77MwxS8LG7uJhniDSaFB8eSzxew2b.e','usuario',NULL,NULL,NULL,NULL,NULL),(3,'Ceciliabolado3',NULL,'$2b$10$kZgUcFO4Z5LgyQ8qNfQ/4eOMYrnWvGBdMwUifcX1DS8uI5XSNrPdu','usuario',NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,18 +114,12 @@ DROP TABLE IF EXISTS `vehiculos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vehiculos` (
-  `idvehiculos` int NOT NULL AUTO_INCREMENT,
-  `tipo_vehiculo` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `precio_vehiculo` int DEFAULT NULL,
-  `pago_vehiculo` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `fecha_vehiculo` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_act_inicio` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `categoria_precio` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `id_usuario` int DEFAULT NULL,
-  PRIMARY KEY (`idvehiculos`),
-  UNIQUE KEY `idvehiculos_UNIQUE` (`idvehiculos`),
-  KEY `fk_vehiculos_usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id_vehiculos` int NOT NULL AUTO_INCREMENT,
+  `patente` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `tipo_vehiculo` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id_vehiculos`),
+  UNIQUE KEY `patente_UNIQUE` (`patente`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +128,6 @@ CREATE TABLE `vehiculos` (
 
 LOCK TABLES `vehiculos` WRITE;
 /*!40000 ALTER TABLE `vehiculos` DISABLE KEYS */;
-INSERT INTO `vehiculos` VALUES (1,'Automóvil',1500,'efectivo','2024-11-24 21:23:32','2024-11-24 21:23:32','1500',1),(2,'Motocicleta',1000,'efectivo','2024-11-24 21:23:32','2024-11-24 21:23:32','1000',1),(3,'Camioneta',2000,'efectivo','2024-11-24 21:25:45','2024-11-24 21:25:45','2000',1),(4,'Camión',2500,'efectivo','2024-11-24 21:26:16','2024-11-24 21:26:16','2500',1);
 /*!40000 ALTER TABLE `vehiculos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -115,4 +140,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-24 18:45:17
+-- Dump completed on 2024-11-26  3:23:07
