@@ -4,112 +4,164 @@ import { body, validationResult } from "express-validator";
 
 const router = express.Router();
 
-// api crud - Vehiculos 
+// API CRUD - Vehículos
 
-// GET /vehiculos
+// GET /vehiculos - Obtener todos los vehículos
 router.get("/", async (req, res) => {
-    try {
-      const [vehiculos] = await db.execute("SELECT * FROM `db-lab4`.vehiculos");
-      res.send({ vehiculos });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: "Error al consultar los vehículos" });
-    }
-  });
-  
-// GET /vehiculos/:id  -  vehiculo por ID
-router.get("/:id", async (req, res) => {
-    const { id } = req.params;
-    try {
-      const [vehiculo] = await db.execute("SELECT idvehiculos, tipo_vehiculo, precio_vehiculo, pago_vehiculo, fecha_vehiculo, categoria_precio, id_usuario, username FROM `db-lab4`.vehiculos WHERE idvehiculos = ?", [id]);
-      if (vehiculo.length === 0) {
-        return res.status(404).send({ message: "Vehículo no encontrado" });
-      }
-      res.send({ vehiculo: vehiculo[0] });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: "Error al consultar el vehículo" });
-    }
+  try {
+    const [vehiculos] = await db.execute("SELECT * FROM vehiculos");
+    res.send({ vehiculos });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error al consultar los vehículos" });
+  }
 });
 
-// POST /vehiculos - Crear nuevo vehículo
-router.post(
-    "/",
-    body("tipo_vehiculo").isString().notEmpty(),
-    body("precio_vehiculo").isInt({ min: 1 }).notEmpty(),
-    body("pago_vehiculo").isString().notEmpty(),
-    body("categoria_precio").isString().notEmpty(),
-    body("id_usuario").isInt(),
-    body("username").isString().isLength({ max: 25 }).optional(),  // username es opcional si id_usuario está presente
-    async (req, res) => {
-      const validacion = validationResult(req);
-      if (!validacion.isEmpty()) {
-        return res.status(400).send({ errores: validacion.array() });
-      }
-  
-      const { tipo_vehiculo, precio_vehiculo, pago_vehiculo, categoria_precio, id_usuario, username } = req.body;
-  
-      // Inserta en la base de datos
-      try {
-        const [result] = await db.execute(
-          "INSERT INTO `db-lab4`.vehiculos (tipo_vehiculo, precio_vehiculo, pago_vehiculo, categoria_precio, id_usuario, username) VALUES (?, ?, ?, ?, ?, ?)",
-          [tipo_vehiculo, precio_vehiculo, pago_vehiculo, categoria_precio, id_usuario, username]
-        );
-        res.status(201).send({
-          vehiculo: {
-            idvehiculos: result.insertId,
-            tipo_vehiculo,
-            precio_vehiculo,
-            pago_vehiculo,
-            categoria_precio,
-            id_usuario,
-            username,
-          },
-        });
-      } catch (error) {
-        console.error(error);
-        res.status(500).send({ message: "Error al cargar el vehículo" });
-      }
+// GET /vehiculos/:id - Obtener vehículo por ID
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [vehiculo] = await db.execute("SELECT * FROM vehiculos WHERE id_vehiculos = ?", [id]);
+    if (vehiculo.length === 0) {
+      return res.status(404).send({ message: "Vehículo no encontrado" });
     }
-  );
+    res.send({ vehiculo: vehiculo[0] });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error al consultar el vehículo" });
+  }
+});
 
-  
-// PUT /vehiculos/:id - Editar vehículo ID
-router.put("/:id", async (req, res) => {
-    const { id } = req.params;
-    const { tipo_vehiculo, precio_vehiculo, pago_vehiculo, categoria_precio, id_usuario, username } = req.body;
-  
+// POST /vehiculos - Crear un nuevo vehículo
+router.post(
+  "/",
+  body("patente").isString().notEmpty(),
+  body("tipo_vehiculo").isString().optional(),
+  async (req, res) => {
+    const validacion = validationResult(req);
+    if (!validacion.isEmpty()) {
+      return res.status(400).send({ errores: validacion.array() });
+    }
+
+    const { patente, tipo_vehiculo } = req.body;
+
     try {
-      // Actualizar vehículo en la base de datos
       const [result] = await db.execute(
-        "UPDATE `db-lab4`.vehiculos SET tipo_vehiculo = ?, precio_vehiculo = ?, pago_vehiculo = ?, categoria_precio = ?, id_usuario = ?, username = ? WHERE idvehiculos = ?",
-        [tipo_vehiculo, precio_vehiculo, pago_vehiculo, categoria_precio, id_usuario, username, id]
+        "INSERT INTO vehiculos (patente, tipo_vehiculo) VALUES (?, ?)",
+        [patente, tipo_vehiculo]
       );
-  
+      res.status(201).send({
+        vehiculo: {
+          id_vehiculos: result.insertId,
+          patente,
+          tipo_vehiculo,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Error al crear el vehículo" });
+    }
+  }
+);
+
+// PUT /vehiculos/:id - Actualizar un vehículo
+router.put(
+  "/:id",
+  body("patente").isString().notEmpty().optional(),
+  body("tipo_vehiculo").isString().optional(),
+  async (req, res) => {
+    const { id } = req.params;
+    const validacion = validationResult(req);
+    if (!validacion.isEmpty()) {
+      return res.status(400).send({ errores: validacion.array() });
+    }
+    const { patente, tipo_vehiculo } = req.body;
+    try {
+      const [result] = await db.execute(
+        "UPDATE vehiculos SET patente = IFNULL(?, patente), tipo_vehiculo = IFNULL(?, tipo_vehiculo) WHERE id_vehiculos = ?",
+        [patente, tipo_vehiculo, id]
+      );
       if (result.affectedRows === 0) {
         return res.status(404).send({ message: "Vehículo no encontrado" });
       }
-  
-      res.status(200).send({ message: "Vehículo actualizado correctamente" });
+      res.status(200).send({
+        message: "Vehículo actualizado correctamente",
+        vehiculo: { id_vehiculos: id, patente, tipo_vehiculo },
+      });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Error al actualizar el vehículo" });
     }
-  });
-  
-// DELETE /vehiculos/:id Eliminar vehículo por ID
+  }
+);
+
+// DELETE /vehiculos/:id - Eliminar un vehículo
 router.delete("/:id", async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
+  try {
+    const [result] = await db.execute("DELETE FROM vehiculos WHERE id_vehiculos = ?", [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).send({ message: "Vehículo no encontrado" });
+    }
+    res.status(200).send({ message: "Vehículo eliminado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error al eliminar el vehículo" });
+  }
+});
+
+// API CRUD - Historial
+
+// GET /historial - Obtener todos los registros de historial
+router.get("/historial", async (req, res) => {
+  try {
+    const [historial] = await db.execute("SELECT * FROM historial");
+    res.send({ historial });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error al consultar el historial" });
+  }
+});
+
+// POST /historial - Crear un nuevo registro en el historial
+router.post(
+  "/historial",
+  body("id_cabina").isInt().optional(),
+  body("id_vehiculo").isInt().notEmpty(),
+  body("id_usuario").isInt().optional(),
+  body("monto_pagado").isDecimal().optional(),
+  async (req, res) => {
+    const validacion = validationResult(req);
+    if (!validacion.isEmpty()) {
+      return res.status(400).send({ errores: validacion.array() });
+    }
+
+    const { id_cabina,id_vehiculo, id_usuario, monto_pagado } = req.body;
+
     try {
-      const [result] = await db.execute("DELETE FROM `db-lab4`.vehiculos WHERE idvehiculos = ?", [id]);
-      if (result.affectedRows === 0) {
-        return res.status(404).send({ message: "Vehículo no encontrado" });
-      }
-      res.status(200).send({ message: "Vehículo eliminado correctamente" });
+      const [result] = await db.execute(
+        "INSERT INTO historial ( id_cabina, id_vehiculo, id_usuario, monto_pagado) VALUES (?, ?, ?, ?)",
+        [
+          id_cabina || null, 
+          id_vehiculo,
+          id_usuario || null, 
+          monto_pagado || null
+        ]
+      );
+      res.status(201).send({
+        historial: {
+          id_historial: result.insertId,
+          id_cabina,
+          id_vehiculo,
+          id_usuario,
+          monto_pagado,
+        },
+      });
     } catch (error) {
       console.error(error);
-      res.status(500).send({ message: "Error al eliminar el vehículo" });
+      res.status(500).send({ message: "Error al registrar en el historial" });
     }
-  });
-  
-  export default router;
+  }
+);
+
+export default router;

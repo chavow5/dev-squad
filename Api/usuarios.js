@@ -44,7 +44,7 @@ router.post(
     // Enviar errores de validacion en caso de ocurrir alguno.
     const validacion = validationResult(req);
     if (!validacion.isEmpty()) {
-      res.status(400).send({ errores: validacion.array() });
+      res.status(400).send({ errores: validacion.array("agrega datos") });
       return;
     }
 

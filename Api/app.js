@@ -19,7 +19,7 @@ app.use(cors());
 
 // Ruta para mostrar usuarios
 app.get("/", async (_, res) => {
-  const [usuarios] = await db.execute("select id, username, rol from usuarios");
+  const [usuarios] = await db.execute("select id_usuario, username, id_rol from usuarios");
   res.send({ usuarios });
 });
 

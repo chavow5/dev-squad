@@ -22,10 +22,10 @@ http://localhost:3000/usuarios
 ```bash 
 body:
 {
-    "username": "Davidramirez",
-    "password": "Davidramirez",
-    "rol": "usuario",
-    "mail_usuario": "david@gmail.com"
+    "username": "Davidramirez1",
+    "password": "Davidramirez1",
+    "id_rol": 1,
+    "mail": "david@gmail.com"
   }
    // te crea el POST
 ```
@@ -35,10 +35,10 @@ http://localhost:3000/usuarios/id
 ```bash 
 body:
 {
-    "username": "Davidramirez",
-    "password": "Davidramirez",
-    "rol": "usuario",
-    "mail_usuario": "david@gmail.com"
+    "username": "Davidramirez1",
+    "password": "Davidramirez1",
+    "id_rol": 1,
+    "mail": "david@gmail.com"
   }
    // actualizar datos de usuarios
 ```
@@ -60,13 +60,9 @@ http://localhost:3000/vehiculos
 ```bash 
 body:
 {
-    "tipo_vehiculo": "Automoviles",
-    "precio_vehiculo": 1500,
-    "pago_vehiculo": "efectivo",
-    "categoria_precio": "2000",
-    "id_usuario": 1, # id de usuario
-    "username": "Ceciliabolado1"  # usuario que este en la DB
-  }
+  "patente": "ABC123",
+  "tipo_vehiculo": "Automovil"
+}
    // te crea el POST
 ```
 
@@ -75,13 +71,9 @@ http://localhost:3000/vehiculos/id
 ```bash 
 body:
 {
-    "tipo_vehiculo": "Camiones",
-    "precio_vehiculo": 2500,
-    "pago_vehiculo": "efectivo",
-    "categoria_precio": "2000",
-    "id_usuario": 1, # id de usuario
-    "username": "Ceciliabolado1" #usuario que este en la DB
-  }
+  "patente": "ABC123",
+  "tipo_vehiculo": "Automovil"
+}
    // actualizar datos de usuarios
 ```
 
@@ -102,9 +94,10 @@ http://localhost:3000/historial
 ```bash 
 body:
 {
-  "cobros": 500,
   "id_vehiculo": 1,
-  "username": "Davidramirez1" #usuario en db
+  "id_cabina": 2,
+  "id_usuario": 3,
+  "monto_pagado": 500
 }
    // te crea el POST
 ```
