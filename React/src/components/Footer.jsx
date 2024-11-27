@@ -3,6 +3,7 @@
 const Footer = () => (
   <footer className="footer">
     <div className="footer-content">
+      <center>
       <p className="footer-text"> 2024 ViaPass - Todos los derechos reservados.</p>
       
       {/* links de navegacion header */}
@@ -23,6 +24,7 @@ const Footer = () => (
       <div className="footer-social">
         <a href="https://www.linkedin.com/in/david-ramirez-031015253/" target="_blank" rel="noopener noreferrer" className="footer-social-link">David Ramirez</a>
       </div>
+      </center>
     </div>
   </footer>
 );
