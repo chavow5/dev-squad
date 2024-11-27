@@ -63,7 +63,7 @@ const SistemaPeaje = () => {
             <select name="tipo" value={vehiculo.tipo} onChange={handleChange} required>
               <option value="">Seleccionar</option>
               <option value="Motocicleta">1.Motocicleta</option>
-              <option value="Automovil">2.Automovil</option>
+              <option value="Automovil">2.Automóvil</option>
               <option value="Camioneta">3.Camioneta</option>
               <option value="Camion">4.Camion</option>
             </select>

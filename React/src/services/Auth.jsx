@@ -178,7 +178,7 @@ export const AuthPage = ({ children }) => {
   const location = useLocation();
 
   if (!sesion || !localStorage.getItem("token")) {
-    alert('necesitas iniciar session para ingresar a esta pagina')
+    alert('Necesitas iniciar sesión para ingresar a esta página')
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
