@@ -31,7 +31,7 @@ app.use("/auth", authRouter);
 app.use("/vehiculos", vehiculosRouter);
 
 // Ruta Historial
-app.use("/historial", historialRouter); 
+app.use("/historial", historialRouter);
 
 app.listen(port, () => {
   console.log(`La aplicación está funcionando en: http://localhost:${port}`);

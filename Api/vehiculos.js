@@ -110,58 +110,58 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// API CRUD - Historial
+// // API CRUD - Historial esta en historial.js
 
-// GET /historial - Obtener todos los registros de historial
-router.get("/historial", async (req, res) => {
-  try {
-    const [historial] = await db.execute("SELECT * FROM historial");
-    res.send({ historial });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: "Error al consultar el historial" });
-  }
-});
+// // GET /historial - Obtener todos los registros de historial
+// router.get("/historial", async (req, res) => {
+//   try {
+//     const [historial] = await db.execute("SELECT * FROM historial");
+//     res.send({ historial });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send({ message: "Error al consultar el historial" });
+//   }
+// });
 
-// POST /historial - Crear un nuevo registro en el historial
-router.post(
-  "/historial",
-  body("id_cabina").isInt().optional(),
-  body("id_vehiculo").isInt().notEmpty(),
-  body("id_usuario").isInt().optional(),
-  body("monto_pagado").isDecimal().optional(),
-  async (req, res) => {
-    const validacion = validationResult(req);
-    if (!validacion.isEmpty()) {
-      return res.status(400).send({ errores: validacion.array() });
-    }
+// // POST /historial - Crear un nuevo registro en el historial
+// router.post(
+//   "/historial",
+//   body("id_cabina").isInt().optional(),
+//   body("id_vehiculo").isInt().notEmpty(),
+//   body("id_usuario").isInt().optional(),
+//   body("monto_pagado").isDecimal().optional(),
+//   async (req, res) => {
+//     const validacion = validationResult(req);
+//     if (!validacion.isEmpty()) {
+//       return res.status(400).send({ errores: validacion.array() });
+//     }
 
-    const { id_cabina,id_vehiculo, id_usuario, monto_pagado } = req.body;
+//     const { id_cabina,id_vehiculo, id_usuario, monto_pagado } = req.body;
 
-    try {
-      const [result] = await db.execute(
-        "INSERT INTO historial ( id_cabina, id_vehiculo, id_usuario, monto_pagado) VALUES (?, ?, ?, ?)",
-        [
-          id_cabina || null, 
-          id_vehiculo,
-          id_usuario || null, 
-          monto_pagado || null
-        ]
-      );
-      res.status(201).send({
-        historial: {
-          id_historial: result.insertId,
-          id_cabina,
-          id_vehiculo,
-          id_usuario,
-          monto_pagado,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: "Error al registrar en el historial" });
-    }
-  }
-);
+//     try {
+//       const [result] = await db.execute(
+//         "INSERT INTO historial ( id_cabina, id_vehiculo, id_usuario, monto_pagado) VALUES (?, ?, ?, ?)",
+//         [
+//           id_cabina || null, 
+//           id_vehiculo,
+//           id_usuario || null, 
+//           monto_pagado || null
+//         ]
+//       );
+//       res.status(201).send({
+//         historial: {
+//           id_historial: result.insertId,
+//           id_cabina,
+//           id_vehiculo,
+//           id_usuario,
+//           monto_pagado,
+//         },
+//       });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send({ message: "Error al registrar en el historial" });
+//     }
+//   }
+// );
 
 export default router;
