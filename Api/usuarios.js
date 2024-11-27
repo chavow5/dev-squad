@@ -8,7 +8,7 @@ const router = express.Router();
 // API CRUD - USUARIOS
 // GET /usuarios  - Consultar todos los usuarios
 router.get("/", async (req, res) => {
-  const [usuarios] = await db.execute("select id,username,rol, mail_usuario from usuarios");
+  const [usuarios] = await db.execute("select id_usuario,username,id_rol, mail from usuarios");
   res.send({ usuarios });
 });
 
@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const [usuario] = await db.execute("SELECT id, username, rol, mail_usuario FROM usuarios WHERE id = ?", [id]);
+    const [usuario] = await db.execute("SELECT id_usuario, username, id_rol, mail FROM usuarios WHERE id = ?", [id]);
     if (usuario.length === 0) {
       return res.status(404).send({ message: "Usuario no encontrado" });
     }
@@ -38,8 +38,8 @@ router.post(
     minNumbers: 1, // Al menos un numero
     minSymbols: 0, // Sin simbolos
   }),
-  body("rol").isString().notEmpty().isIn(["admin", "usuario"]),
-  body("mail_usuario").isEmail().notEmpty(),
+  body("id_rol").isIn([1, 2]),
+  body("mail").isEmail().notEmpty(),
   async (req, res) => {
     // Enviar errores de validacion en caso de ocurrir alguno.
     const validacion = validationResult(req);
@@ -48,22 +48,22 @@ router.post(
       return;
     }
 
-    const { username, password, rol, mail_usuario } = req.body;
+    const { username, password, id_rol, mail } = req.body;
 
     // hash de la contraseña
     const passwordHashed = await bcrypt.hash(password, 10);
 
     // Inserta en la base de datos 
     const [result] = await db.execute(
-      "INSERT INTO usuarios (username, password, rol, mail_usuario) VALUES (?, ?, ?, ?)",
-      [username, passwordHashed, rol, mail_usuario]
+      "INSERT INTO usuarios (username, password, id_rol, mail) VALUES (?, ?, ?, ?)",
+      [username, passwordHashed, id_rol, mail]
     );
     res.status(201).send({ usuario: 
     { 
         id: result.insertId,
       username,
-      rol,
-      mail_usuario,
+      id_rol,
+      mail,
     } });
   }
 );
@@ -79,11 +79,11 @@ router.put(
     minNumbers: 1,
     minSymbols: 0,
   }),
-  body("rol").optional().isString().isIn(["admin", "usuario"]),
-  body("mail_usuario").optional().isEmail(),
+  body("rol").optional().isString().isIn(["administrador", "operador"]),
+  body("mail").optional().isEmail(),
   async (req, res) => {
     const { id } = req.params;
-    const { username, password, rol, mail_usuario } = req.body;
+    const { username, password, id_rol, mail } = req.body;
 
     // Enviar errores de validación si es necesario
     const validacion = validationResult(req);
@@ -104,11 +104,11 @@ router.put(
       values.push(passwordHashed);
     }
     if (rol) {
-      updates.push("rol = ?");
+      updates.push("id_rol = ?");
       values.push(rol);
     }
     if (mail_usuario) {
-      updates.push("mail_usuario = ?");
+      updates.push("mail = ?");
       values.push(mail_usuario);
     }
     // Si no hay datos para actualizar, tira un error
@@ -119,7 +119,7 @@ router.put(
     // Actualizar en la base de datos
     values.push(id); // El id debe ser el último valor para la condición WHERE
     await db.execute(
-      `UPDATE usuarios SET ${updates.join(", ")} WHERE id = ?`,
+      `UPDATE usuarios SET ${updates.join(", ")} WHERE id_usuario = ?`,
       values
     );
 
@@ -131,7 +131,7 @@ router.put(
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const [result] = await db.execute("DELETE FROM usuarios WHERE id = ?", [id]);
+    const [result] = await db.execute("DELETE FROM usuarios WHERE id_usuario = ?", [id]);
     if (result.affectedRows === 0) {
       return res.status(404).send({ message: "Usuario no encontrado" });
     }
