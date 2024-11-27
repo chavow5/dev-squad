@@ -17,6 +17,11 @@ const port = process.env.PORT ?? 3000; // si el puerto 3000 esta en uso busca ot
 app.use(express.json());
 app.use(cors());
 
+// Ruta para mostrar usuarios
+app.get("/", async (_, res) => {
+  const [usuarios] = await db.execute("select id, username, rol from usuarios");
+  res.send({ usuarios });
+});
 
 // Ruta usuarios y autenticación
 app.use("/usuarios", usuariosRouter);
