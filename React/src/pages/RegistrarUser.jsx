@@ -1,37 +1,37 @@
 import { useState } from 'react';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom' 
 
 const RegistrarUser = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmarPassword, setConfirmarPassword] = useState('');
-  const navigate = useNavigate();
+  const [idRol, setIdRol] = useState('1'); // valor por defecto
+  const [mail, setMail] = useState('');
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    // confirmar la contrase;as
-    if (password !== confirmarPassword) {
-      alert("las contraseñas no coinciden");
+
+    if (!username || !password || !mail) {
+      alert("Por favor, complete todos los campos.");
       return;
     }
 
     try {
-      await axios.post('http://localhost:3000/usuarios', { username, password });
-      console.log("Usuario creado con éxito");
-      alert(`usuario ${username} creado con Exito`)
-      navigate('/login')
-      
-
+      await axios.post('http://localhost:3000/usuarios', { 
+        username, 
+        password, 
+        id_rol: idRol, 
+        mail 
+      });
+      alert("Usuario creado con éxito");
     } catch (err) {
       console.error("Error al crear el usuario:", err);
-      alert("la contraseña es muy corta")
+      alert("Hubo un error al crear el usuario.");
     }
   };
 
   return (
     <div>
-      <h2>Crear nueva Cuenta</h2>
+      <h2>Crear Cuenta</h2>
       <form onSubmit={handleRegister}>
         <input 
           type="text" 
@@ -39,20 +39,22 @@ const RegistrarUser = () => {
           value={username} 
           onChange={(e) => setUsername(e.target.value)} 
         />
-        {/* crear contrase;a */}
         <input 
           type="password" 
-          placeholder="Ingrese Contraseña" 
+          placeholder="Password" 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
         />
-        {/* contrase;a confirmar */}
-        <input
-        type="password"
-        placeholder="Confirmar contraseña"
-        value={confirmarPassword}
-        onChange={(e)=> setConfirmarPassword(e.target.value)}>
-        </input>
+        <input 
+          type="email" 
+          placeholder="Email" 
+          value={mail} 
+          onChange={(e) => setMail(e.target.value)} 
+        />
+        <select value={idRol} onChange={(e) => setIdRol(e.target.value)}>
+          <option value="1">Administrador</option>
+          <option value="2">Operador</option>
+        </select>
         <button type="submit">Crear Cuenta</button>
       </form>
     </div>
