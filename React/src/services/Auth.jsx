@@ -1,3 +1,124 @@
+import { createContext, useContext, useEffect, useState } from "react";
+import PropTypes from "prop-types"; // Importar PropTypes
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+
+const AuthContext = createContext();
+
+// Hook personalizado para acceder al contexto de autenticación
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+export const AuthProvider = ({ children }) => {
+  const [sesion, setSesion] = useState(() => {
+    const token = localStorage.getItem("token");
+    return token ? { token, username: null } : null;
+  });
+
+  const login = async (username, password, onSuccess, onError) => {
+    try {
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!response.ok) throw new Error("Credenciales inválidas");
+
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      setSesion({ username, token: data.token });
+
+      if (onSuccess) onSuccess();
+    } catch (error) {
+      if (onError) onError(error.message);
+    }
+  };
+
+  const logout = (onSuccess) => {
+    localStorage.removeItem("token");
+    setSesion(null);
+    if (onSuccess) onSuccess();
+  };
+
+  useEffect(() => {
+    const validarToken = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await fetch("http://localhost:3000/auth/validate", {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (!response.ok) throw new Error("Token inválido");
+
+          const data = await response.json();
+          setSesion({ username: data.username, token });
+        } catch {
+          logout();
+        }
+      }
+    };
+    validarToken();
+  }, []);
+
+  const value = { sesion, login, logout };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const AuthPage = ({ children }) => {
+  const { sesion } = useAuth();
+  const location = useLocation();
+
+  if (!sesion || !localStorage.getItem("token")) {
+    alert("Necesitas iniciar sesión para acceder a esta página");
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+};
+
+AuthPage.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const AuthRol = ({ rol, children }) => {
+  const { sesion } = useAuth();
+
+  if (!sesion || sesion.rol !== rol) {
+    return null;
+  }
+
+  return children;
+};
+
+AuthRol.propTypes = {
+  rol: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+export const AuthStatus = () => {
+  const { sesion, logout } = useAuth();
+  const navigate = useNavigate();
+
+  if (!sesion) {
+    return <p>No estás conectado</p>;
+  }
+
+  return (
+    <>
+      <p>Conectado como {sesion.username}</p>
+      <button onClick={() => logout(() => navigate("/"))}>Salir</button>
+    </>
+  );
+};
+
+
+
 /*
 import { createContext, useContext, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -80,7 +201,7 @@ export const AuthRol = ({ rol, children }) => {
 };
 
 // Estado de autorizacion
-/*
+
 export const AuthStatus = () => {
   const { sesion, logout } = useAuth();
   const navigate = useNavigate();
@@ -96,7 +217,7 @@ export const AuthStatus = () => {
     </>
   );
 };
-*/
+
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
@@ -195,4 +316,4 @@ export const AuthRol = ({ rol, children }) => {
 
   return children;
 };
-
+*/

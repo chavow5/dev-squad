@@ -7,10 +7,10 @@ const router = express.Router();
 // API CRUD - Historial Vehículo
 
 // GET /historial - Obtener todos los registros del historial de vehículos
-router.get("/historial", async (req, res) => {
+router.get("/historial/historial", async (req, res) => {
   try {
     const [historial] = await db.execute(`
-      SELECT * FROM .historial_vehiculo
+      SELECT * FROM historial_vehiculo
     `);
 
     if (historial.length === 0) {
