@@ -35,11 +35,12 @@ http://localhost:3000/usuarios/id
 ```bash 
 body:
 {
-    "username": "Davidramirez1",
-    "password": "Davidramirez1",
-    "id_rol": 1,
-    "mail": "david@gmail.com"
-  }
+  "username": "Davidramirez1",
+  "password": "Davidramirez1",
+  "id_rol": 1,
+  "mail": "david@gmail.com",
+  "nombreCompleto": "David Ramirez"
+}
    // actualizar datos de usuarios
 ```
 
@@ -60,8 +61,9 @@ http://localhost:3000/vehiculos
 ```bash 
 body:
 {
-  "patente": "ABC123",
-  "tipo_vehiculo": "Automovil"
+  "categoria": "Moto",
+  "precio": 1000,
+  "metodo_pago": "Efectivo"
 }
    // te crea el POST
 ```
@@ -71,9 +73,12 @@ http://localhost:3000/vehiculos/id
 ```bash 
 body:
 {
-  "patente": "ABC123",
-  "tipo_vehiculo": "Automovil"
-}
+    "id_vehiculo": 2,
+    "categoria": "Auto",
+    "precio": "1500.00",
+    "metodo_pago": "Efectivo",
+    "fecha": "2024-11-27T23:45:14.000Z"
+  }
    // actualizar datos de usuarios
 ```
 

@@ -6,10 +6,10 @@ const router = express.Router();
 
 // API CRUD - Vehículos
 
-// GET /vehiculos - Obtener todos los vehículos
+// GET /vehiculo - Obtener todos los vehículos
 router.get("/", async (req, res) => {
   try {
-    const [vehiculos] = await db.execute("SELECT * FROM vehiculos");
+    const [vehiculos] = await db.execute("SELECT * FROM vehiculo");
     res.send({ vehiculos });
   } catch (error) {
     console.error(error);
@@ -17,11 +17,11 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET /vehiculos/:id - Obtener vehículo por ID
+// GET /vehiculo/:id - Obtener vehículo por ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const [vehiculo] = await db.execute("SELECT * FROM vehiculos WHERE id_vehiculos = ?", [id]);
+    const [vehiculo] = await db.execute("SELECT * FROM vehiculo WHERE id_vehiculo = ?", [id]);
     if (vehiculo.length === 0) {
       return res.status(404).send({ message: "Vehículo no encontrado" });
     }
@@ -32,29 +32,33 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST /vehiculos - Crear un nuevo vehículo
+// POST /vehiculo - Crear un nuevo vehículo
 router.post(
   "/",
-  body("patente").isString().notEmpty(),
-  body("tipo_vehiculo").isString().optional(),
+  body("categoria").isString().notEmpty(),
+  body("precio").isDecimal().notEmpty(),
+  body("metodo_pago").isString().optional(),
+  body("fecha").isISO8601().optional(),
   async (req, res) => {
     const validacion = validationResult(req);
     if (!validacion.isEmpty()) {
       return res.status(400).send({ errores: validacion.array() });
     }
 
-    const { patente, tipo_vehiculo } = req.body;
+    const { categoria, precio, metodo_pago, fecha } = req.body;
 
     try {
       const [result] = await db.execute(
-        "INSERT INTO vehiculos (patente, tipo_vehiculo) VALUES (?, ?)",
-        [patente, tipo_vehiculo]
+        "INSERT INTO vehiculo (categoria, precio, metodo_pago, fecha) VALUES (?, ?, ?, ?)",
+        [categoria, precio, metodo_pago || null, fecha || null]
       );
       res.status(201).send({
         vehiculo: {
-          id_vehiculos: result.insertId,
-          patente,
-          tipo_vehiculo,
+          id_vehiculo: result.insertId,
+          categoria,
+          precio,
+          metodo_pago,
+          fecha,
         },
       });
     } catch (error) {
@@ -64,29 +68,41 @@ router.post(
   }
 );
 
-// PUT /vehiculos/:id - Actualizar un vehículo
+// PUT /vehiculo/:id - Actualizar un vehículo
 router.put(
   "/:id",
-  body("patente").isString().notEmpty().optional(),
-  body("tipo_vehiculo").isString().optional(),
+  body("categoria").isString().optional(),
+  body("precio").isDecimal().optional(),
+  body("metodo_pago").isString().optional(),
+  body("fecha").isISO8601().optional(),
   async (req, res) => {
     const { id } = req.params;
     const validacion = validationResult(req);
     if (!validacion.isEmpty()) {
       return res.status(400).send({ errores: validacion.array() });
     }
-    const { patente, tipo_vehiculo } = req.body;
+
+    const { categoria, precio, metodo_pago, fecha } = req.body;
+
     try {
       const [result] = await db.execute(
-        "UPDATE vehiculos SET patente = IFNULL(?, patente), tipo_vehiculo = IFNULL(?, tipo_vehiculo) WHERE id_vehiculos = ?",
-        [patente, tipo_vehiculo, id]
+        `UPDATE vehiculo
+         SET 
+           categoria = IFNULL(?, categoria),
+           precio = IFNULL(?, precio),
+           metodo_pago = IFNULL(?, metodo_pago),
+           fecha = IFNULL(?, fecha)
+         WHERE id_vehiculo = ?`,
+        [categoria, precio, metodo_pago, fecha, id]
       );
+
       if (result.affectedRows === 0) {
         return res.status(404).send({ message: "Vehículo no encontrado" });
       }
+
       res.status(200).send({
         message: "Vehículo actualizado correctamente",
-        vehiculo: { id_vehiculos: id, patente, tipo_vehiculo },
+        vehiculo: { id_vehiculo: id, categoria, precio, metodo_pago, fecha },
       });
     } catch (error) {
       console.error(error);
@@ -95,11 +111,11 @@ router.put(
   }
 );
 
-// DELETE /vehiculos/:id - Eliminar un vehículo
+// DELETE /vehiculo/:id - Eliminar un vehículo
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const [result] = await db.execute("DELETE FROM vehiculos WHERE id_vehiculos = ?", [id]);
+    const [result] = await db.execute("DELETE FROM vehiculo WHERE id_vehiculo = ?", [id]);
     if (result.affectedRows === 0) {
       return res.status(404).send({ message: "Vehículo no encontrado" });
     }
@@ -109,59 +125,5 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send({ message: "Error al eliminar el vehículo" });
   }
 });
-
-// API CRUD - Historial
-
-// GET /historial - Obtener todos los registros de historial
-router.get("/historial", async (req, res) => {
-  try {
-    const [historial] = await db.execute("SELECT * FROM historial");
-    res.send({ historial });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: "Error al consultar el historial" });
-  }
-});
-
-// POST /historial - Crear un nuevo registro en el historial
-router.post(
-  "/historial",
-  body("id_cabina").isInt().optional(),
-  body("id_vehiculo").isInt().notEmpty(),
-  body("id_usuario").isInt().optional(),
-  body("monto_pagado").isDecimal().optional(),
-  async (req, res) => {
-    const validacion = validationResult(req);
-    if (!validacion.isEmpty()) {
-      return res.status(400).send({ errores: validacion.array() });
-    }
-
-    const { id_cabina,id_vehiculo, id_usuario, monto_pagado } = req.body;
-
-    try {
-      const [result] = await db.execute(
-        "INSERT INTO historial ( id_cabina, id_vehiculo, id_usuario, monto_pagado) VALUES (?, ?, ?, ?)",
-        [
-          id_cabina || null, 
-          id_vehiculo,
-          id_usuario || null, 
-          monto_pagado || null
-        ]
-      );
-      res.status(201).send({
-        historial: {
-          id_historial: result.insertId,
-          id_cabina,
-          id_vehiculo,
-          id_usuario,
-          monto_pagado,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: "Error al registrar en el historial" });
-    }
-  }
-);
 
 export default router;

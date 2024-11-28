@@ -1,0 +1,33 @@
+-- borrar o crear una base de datos
+-- Crear tabla usuarios
+CREATE TABLE usuarios (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    username VARCHAR(25) NOT NULL,
+    password VARCHAR(150) NOT NULL,
+    email VARCHAR(45),
+    nombreCompleto VARCHAR(45),
+    id_rol INT(11),
+    PRIMARY KEY (id)
+);
+
+-- Crear tabla vehiculo
+CREATE TABLE vehiculo (
+    id_vehiculo INT(11) NOT NULL AUTO_INCREMENT,
+    categoria VARCHAR(45),
+    precio DECIMAL(10, 2),
+    metodo_pago VARCHAR(45),
+    fecha TIMESTAMP,
+    PRIMARY KEY (id_vehiculo)
+);
+
+-- Crear tabla historial_vehiculo
+CREATE TABLE historial_vehiculo (
+    id_historial_vehiculo INT(11) NOT NULL AUTO_INCREMENT,
+    id_vehiculo INT(11),
+    fecha TIMESTAMP,
+    id_monto DECIMAL(10, 2),
+    id_usuario INT(11),
+    PRIMARY KEY (id_historial_vehiculo),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
+    FOREIGN KEY (id_vehiculo) REFERENCES vehiculo(id_vehiculo)
+);

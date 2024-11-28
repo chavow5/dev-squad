@@ -8,7 +8,9 @@ const router = express.Router();
 // API CRUD - USUARIOS
 // GET /usuarios  - Consultar todos los usuarios
 router.get("/", async (req, res) => {
-  const [usuarios] = await db.execute("select id_usuario,username,id_rol, mail from usuarios");
+  const [usuarios] = await db.execute(
+    "SELECT id, username, id_rol, email FROM usuarios"
+  );
   res.send({ usuarios });
 });
 
@@ -16,7 +18,10 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const [usuario] = await db.execute("SELECT id_usuario, username, id_rol, mail FROM usuarios WHERE id = ?", [id]);
+    const [usuario] = await db.execute(
+      "SELECT id, username, id_rol, email, nombreCompleto FROM usuarios WHERE id = ?",
+      [id]
+    );
     if (usuario.length === 0) {
       return res.status(404).send({ message: "Usuario no encontrado" });
     }
@@ -32,39 +37,44 @@ router.post(
   "/",
   body("username").isAlphanumeric().notEmpty().isLength({ max: 25 }),
   body("password").isStrongPassword({
-    minLength: 8, // Minino de 8 caracteres (letras y numeros)
-    minLowercase: 1, // Al menos una letra minuscula
-    minUppercase: 1, // Al menos una letra mayusculas
-    minNumbers: 1, // Al menos un numero
-    minSymbols: 0, // Sin simbolos
+    minLength: 8, 
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 0, 
   }),
   body("id_rol").isIn([1, 2]),
   body("mail").isEmail().notEmpty(),
+  body("nombreCompleto").notEmpty(),
   async (req, res) => {
-    // Enviar errores de validacion en caso de ocurrir alguno.
     const validacion = validationResult(req);
     if (!validacion.isEmpty()) {
-      res.status(400).send({ errores: validacion.array("agrega datos") });
-      return;
+      return res.status(400).send({ errores: validacion.array() });
     }
 
-    const { username, password, id_rol, mail } = req.body;
+    const { username, password, id_rol, mail, nombreCompleto } = req.body;
 
-    // hash de la contraseña
+    // Hash de la contraseña
     const passwordHashed = await bcrypt.hash(password, 10);
 
-    // Inserta en la base de datos 
-    const [result] = await db.execute(
-      "INSERT INTO usuarios (username, password, id_rol, mail) VALUES (?, ?, ?, ?)",
-      [username, passwordHashed, id_rol, mail]
-    );
-    res.status(201).send({ usuario: 
-    { 
-        id: result.insertId,
-      username,
-      id_rol,
-      mail,
-    } });
+    try {
+      const [result] = await db.execute(
+        "INSERT INTO usuarios (username, password, email, nombreCompleto, id_rol) VALUES (?, ?, ?, ?, ?)",
+        [username, passwordHashed, mail, nombreCompleto, id_rol]
+      );
+      res.status(201).send({
+        usuario: {
+          id: result.insertId,
+          username,
+          nombreCompleto,
+          id_rol,
+          mail,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Error al crear el usuario" });
+    }
   }
 );
 
@@ -79,21 +89,21 @@ router.put(
     minNumbers: 1,
     minSymbols: 0,
   }),
-  body("rol").optional().isString().isIn(["administrador", "operador"]),
+  body("id_rol").optional().isIn([1, 2]),
   body("mail").optional().isEmail(),
+  body("nombreCompleto").optional(),
   async (req, res) => {
     const { id } = req.params;
-    const { username, password, id_rol, mail } = req.body;
+    const { username, password, id_rol, mail, nombreCompleto } = req.body;
 
-    // Enviar errores de validación si es necesario
     const validacion = validationResult(req);
     if (!validacion.isEmpty()) {
       return res.status(400).send({ errores: validacion.array() });
     }
 
-    // Preparar el conjunto de actualizaciones
     const updates = [];
     const values = [];
+
     if (username) {
       updates.push("username = ?");
       values.push(username);
@@ -103,35 +113,45 @@ router.put(
       updates.push("password = ?");
       values.push(passwordHashed);
     }
-    if (rol) {
+    if (id_rol) {
       updates.push("id_rol = ?");
-      values.push(rol);
+      values.push(id_rol);
     }
-    if (mail_usuario) {
-      updates.push("mail = ?");
-      values.push(mail_usuario);
+    if (mail) {
+      updates.push("email = ?");
+      values.push(mail);
     }
-    // Si no hay datos para actualizar, tira un error
+    if (nombreCompleto) {
+      updates.push("nombreCompleto = ?");
+      values.push(nombreCompleto);
+    }
+
     if (updates.length === 0) {
       return res.status(400).send({ error: "No hay datos para actualizar" });
     }
 
-    // Actualizar en la base de datos
-    values.push(id); // El id debe ser el último valor para la condición WHERE
-    await db.execute(
-      `UPDATE usuarios SET ${updates.join(", ")} WHERE id_usuario = ?`,
-      values
-    );
-
-    res.status(200).send({ message: "Usuario actualizado correctamente" });
+    values.push(id);
+    try {
+      await db.execute(
+        `UPDATE usuarios SET ${updates.join(", ")} WHERE id = ?`,
+        values
+      );
+      res.status(200).send({ message: "Usuario actualizado correctamente" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Error al actualizar el usuario" });
+    }
   }
 );
 
-// DELETE /usuarios/:id  - Eliminar un usuario por ID
+// DELETE /usuarios/:id - Eliminar un usuario por ID
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const [result] = await db.execute("DELETE FROM usuarios WHERE id_usuario = ?", [id]);
+    const [result] = await db.execute(
+      "DELETE FROM usuarios WHERE id = ?",
+      [id]
+    );
     if (result.affectedRows === 0) {
       return res.status(404).send({ message: "Usuario no encontrado" });
     }
