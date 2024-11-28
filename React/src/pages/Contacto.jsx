@@ -6,7 +6,7 @@ const Contacto = () => (
     
     <section className="contacto-info">
       <p className="contacto-description">
-        Queremos saber de ti! Ya sea para hablar sobre nuestro proyecto, la universidad, o simplemente conocer quiénes somos.
+        ¡Queremos saber de ti! Ya sea para hablar sobre nuestro proyecto, la universidad, o simplemente conocer quiénes somos.
       </p>
     </section>
     
@@ -14,16 +14,15 @@ const Contacto = () => (
       <h3 className="contacto-subtitle">Equipo de ViaPass</h3>
       <ul className="contacto-team-list">
         <ul className="contacto-team-member">
-        <strong>David Ramírez</strong> - Telefono: <br />
-        <strong>David Ramírez</strong> - Telefono: <br />
-        <strong>David Ramírez</strong> - Telefono: <br />
-        <strong>David Ramírez</strong> - Telefono: <br />
+        <strong>David Ramírez</strong> - Teléfono: 3804201334<br />
+        <strong>Cecilia Bolado</strong> - Teléfono: 3804802678 <br />
+        <strong>Alejandro Romero</strong> - Teléfono: 3804690958<br />
+        <strong>Celeste Orellano</strong> - Teléfono: 3804910523<br />
         
         </ul>
       </ul>
     </section>
     
-    {/* Formulario de contacto  - en caso de tener tiempo usar envio de email  */}
     <section className="contacto-form-section">
       <h3 className="contacto-subtitle">Envíanos un mensaje</h3>
       <form className="contacto-form">
