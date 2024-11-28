@@ -22,7 +22,7 @@ const RegistrarUser = () => {
         id_rol: idRol, 
         mail 
       });
-      alert("Usuario creado con éxito");
+      alert(`Usuario ${username} creado con éxito`);
     } catch (err) {
       console.error("Error al crear el usuario:", err);
       alert("Hubo un error al crear el usuario.");

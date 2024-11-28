@@ -7,14 +7,20 @@ const router = express.Router();
 //Api Crud - HISTORIAL
 
 // GET /historial - Obtener todos los registros de historial
-router.get("/historial", async (req, res) => {
+// Obtener historial con detalles
+router.get("/", async (req, res) => {
   try {
-    console.log("Consultando historial...");  // Para verificar si se llega a esta parte
-    const [historial] = await db.execute("SELECT * FROM historial");
-    res.send({ historial });
+    const [historial] = await db.execute(`
+      SELECT h.id_historial, h.fecha_peaje, c.nombre as cabina, v.patente, u.username, h.monto_pagado
+      FROM historial h
+      JOIN cabinas c ON h.id_cabina = c.id_cabina
+      JOIN vehiculos v ON h.id_vehiculo = v.id_vehiculos
+      JOIN usuarios u ON h.id_usuario = u.id_usuario
+    `);
+    res.send(historial);
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Error al consultar el historial" });
+    res.status(500).send({ message: "Error al obtener historial" });
   }
 });
 
