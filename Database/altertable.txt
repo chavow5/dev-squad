@@ -2,4 +2,7 @@ ALTER TABLE vehiculos
 ADD COLUMN numero_cabina INT DEFAULT NULL, 
 ADD COLUMN precio DECIMAL(10, 2) DEFAULT NULL, 
 ADD COLUMN fecha DATE DEFAULT CURRENT_DATE, 
-ADD COLUMN metodo_pago ENUM('efectivo', 'transferencia', 'qr', 'cheques', 'criptomonedas') DEFAULT 'efectivo';
+ADD COLUMN metodo_pago ENUM('efectivo', 'transferencia', 'qr', 'chachos', 'criptomonedas') DEFAULT 'efectivo';
+
+ALTER TABLE vehiculos
+MODIFY COLUMN precio INT DEFAULT NULL;

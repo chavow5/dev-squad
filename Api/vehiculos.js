@@ -21,7 +21,10 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const [vehiculo] = await db.execute("SELECT * FROM vehiculos WHERE id_vehiculos = ?", [id]);
+    const [vehiculo] = await db.execute(
+      "SELECT * FROM vehiculos WHERE id_vehiculos = ?",
+      [id]
+    );
     if (vehiculo.length === 0) {
       return res.status(404).send({ message: "Vehículo no encontrado" });
     }
@@ -37,24 +40,34 @@ router.post(
   "/",
   body("patente").isString().notEmpty(),
   body("tipo_vehiculo").isString().optional(),
+  body("numero_cabina").isInt().optional(),
+  body("precio").isDecimal().optional(),
+  body("fecha").isDate().optional(),
+  body("metodo_pago")
+    .isIn(["efectivo", "transferencia", "qr", "chachos"])
+    .optional(),
   async (req, res) => {
     const validacion = validationResult(req);
     if (!validacion.isEmpty()) {
       return res.status(400).send({ errores: validacion.array() });
     }
 
-    const { patente, tipo_vehiculo } = req.body;
+    const { patente, tipo_vehiculo, numero_cabina, precio, fecha, metodo_pago } = req.body;
 
     try {
       const [result] = await db.execute(
-        "INSERT INTO vehiculos (patente, tipo_vehiculo) VALUES (?, ?)",
-        [patente, tipo_vehiculo]
+        "INSERT INTO vehiculos (patente, tipo_vehiculo, numero_cabina, precio, fecha, metodo_pago) VALUES (?, ?, ?, ?, ?, ?)",
+        [patente, tipo_vehiculo, numero_cabina, precio, fecha, metodo_pago]
       );
       res.status(201).send({
         vehiculo: {
           id_vehiculos: result.insertId,
           patente,
           tipo_vehiculo,
+          numero_cabina,
+          precio,
+          fecha,
+          metodo_pago,
         },
       });
     } catch (error) {
@@ -67,26 +80,41 @@ router.post(
 // PUT /vehiculos/:id - Actualizar un vehículo
 router.put(
   "/:id",
-  body("patente").isString().notEmpty().optional(),
+  body("patente").isString().optional(),
   body("tipo_vehiculo").isString().optional(),
+  body("numero_cabina").isInt().optional(),
+  body("precio").isDecimal().optional(),
+  body("fecha").isDate().optional(),
+  body("metodo_pago")
+    .isIn(["efectivo", "transferencia", "qr", "chachos"])
+    .optional(),
   async (req, res) => {
     const { id } = req.params;
     const validacion = validationResult(req);
     if (!validacion.isEmpty()) {
       return res.status(400).send({ errores: validacion.array() });
     }
-    const { patente, tipo_vehiculo } = req.body;
+
+    const { patente, tipo_vehiculo, numero_cabina, precio, fecha, metodo_pago } = req.body;
+
     try {
       const [result] = await db.execute(
-        "UPDATE vehiculos SET patente = IFNULL(?, patente), tipo_vehiculo = IFNULL(?, tipo_vehiculo) WHERE id_vehiculos = ?",
-        [patente, tipo_vehiculo, id]
+        `UPDATE vehiculos 
+         SET patente = IFNULL(?, patente), 
+             tipo_vehiculo = IFNULL(?, tipo_vehiculo), 
+             numero_cabina = IFNULL(?, numero_cabina), 
+             precio = IFNULL(?, precio), 
+             fecha = IFNULL(?, fecha), 
+             metodo_pago = IFNULL(?, metodo_pago) 
+         WHERE id_vehiculos = ?`,
+        [patente, tipo_vehiculo, numero_cabina, precio, fecha, metodo_pago, id]
       );
       if (result.affectedRows === 0) {
         return res.status(404).send({ message: "Vehículo no encontrado" });
       }
       res.status(200).send({
         message: "Vehículo actualizado correctamente",
-        vehiculo: { id_vehiculos: id, patente, tipo_vehiculo },
+        vehiculo: { id_vehiculos: id, patente, tipo_vehiculo, numero_cabina, precio, fecha, metodo_pago },
       });
     } catch (error) {
       console.error(error);
@@ -109,6 +137,8 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send({ message: "Error al eliminar el vehículo" });
   }
 });
+
+
 
 // // API CRUD - Historial esta en historial.js
 

@@ -1,92 +1,177 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+
 const SistemaPeaje = () => {
-  const [historial, setHistorial] = useState([]);
-  const [editItem, setEditItem] = useState(null);
+  const [vehiculos, setVehiculos] = useState([]); 
+  const [nuevoVehiculo, setNuevoVehiculo] = useState({
+    patente: "",
+    tipo_vehiculo: "",
+    numero_cabina: "",
+    precio: "",
+    fecha: "",
+    metodo_pago: "",
+  });
   const [filter, setFilter] = useState({ dia: "", mes: "" });
 
-    const [nuevoVehiculo, setNuevoVehiculo] = useState({ patente: "", tipo_vehiculo: "" });
-    const [nuevoPeaje, setNuevoPeaje] = useState({ id_cabina: "", id_vehiculo: "", monto_pagado: "" });
-  
-
   useEffect(() => {
-    fetchHistorial();
+    fetchVehiculos(); 
   }, []);
 
-  const fetchHistorial = async () => {
-    const { data } = await axios.get("http://localhost:3000/historial/agrupado");
-    setHistorial(data);
+  const fetchVehiculos = async () => {
+    const { data } = await axios.get("http://localhost:3000/vehiculos");
+    setVehiculos(data.vehiculos);
   };
 
-  const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:3000/historial/${id}`);
-    fetchHistorial();
-  };
-
-  const handleEdit = (item) => {
-    setEditItem(item);
-  };
-
-  const saveEdit = async (id) => {
-    await axios.put(`http://localhost:3000/historial/${id}`, {
-      monto_pagado: editItem.monto_pagado,
-      metodo_pago: editItem.metodo_pago,
+  const handleAddVehiculo = async (e) => {
+    e.preventDefault();
+    await axios.post("http://localhost:3000/vehiculos", nuevoVehiculo);
+    fetchVehiculos();
+    setNuevoVehiculo({
+      patente: "",
+      tipo_vehiculo: "",
+      numero_cabina: "",
+      precio: "",
+      fecha: "",
+      metodo_pago: "",
     });
-    setEditItem(null);
-    fetchHistorial();
+    alert(`Vehículo Agregado}`) 
   };
 
+  //imprimir en pdf
   const handlePrint = () => {
     window.print();
   };
 
-  const filteredHistorial = historial.filter((item) => {
-    return (
-      (filter.dia ? item.dia === filter.dia : true) &&
-      (filter.mes ? item.mes === filter.mes : true)
-    );
-  });
+  //filtros
+  // const filteredHistorial = vehiculos.filter((item) => {
+  //   return (
+  //     (filter.dia ? item.dia === filter.dia : true) &&
+  //     (filter.mes ? item.mes === filter.mes : true)
+  //   );
+  // });
 
-  const handleAddPeaje = async (e) => {
-         e.preventDefault();
-         await axios.post("http://localhost:3000/historial", nuevoPeaje);
-         fetchHistorial();
-         setNuevoPeaje({ id_cabina: "", id_vehiculo: "", monto_pagado: "" });
-       };
+  
+  // botones
 
-  const handleAddVehiculo = async (e) => {
-             e.preventDefault();
-             await axios.post("http://localhost:3000/vehiculos", nuevoVehiculo);
-            //  fetchVehiculos();
-             setNuevoVehiculo({ patente: "", tipo_vehiculo: "" });
-           };
+  const salirInicio = () => {
+    window.location.href = '/';
+  };
+
+  const cerrarSesion = () => {
+    alert('Sesión cerrada.');
+    window.location.href = '/login';
+  };
 
   return (
     <div>
+      <h2>Sistema Peaje</h2>
+      <section className="sistema-peaje-controls-login">
+         <button onClick={salirInicio}>Salir</button>
+         <button onClick={cerrarSesion}>Cerrar Sesión</button>
+       </section>
       <form onSubmit={handleAddVehiculo}>
-         <h3>Agregar Vehículo</h3>
-         <input
-           type="text"
-           placeholder="Patente"
-           value={nuevoVehiculo.patente}
-           onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, patente: e.target.value })}
-           />
-         <select
-           value={nuevoVehiculo.tipo_vehiculo}
-           onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, tipo_vehiculo: e.target.value })}
-           >
-           <option value="">Seleccionar tipo</option>
-           <option value="moto">Moto</option>
-           <option value="auto">Auto</option>
-           <option value="camioneta">Camioneta</option>
-           <option value="camion">Camión</option>
-         </select>
-         <button type="submit">Agregar Vehículo</button>
-       </form>
-       <form onSubmit={handleAddPeaje}> </form>
+        <h3>Agregar Vehículo</h3>
+                <input
+          type="text"
+          placeholder="Patente"
+          value={nuevoVehiculo.patente}
+          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, patente: e.target.value })}
+        />
+        <select
+          value={nuevoVehiculo.tipo_vehiculo}
+          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, tipo_vehiculo: e.target.value })}
+        >
+          <option value="">Seleccionar tipo</option>
+          <option value="moto">Moto</option>
+          <option value="auto">Auto</option>
+          <option value="camioneta">Camioneta</option>
+          <option value="camion">Camión</option>
+        </select>
+        <input
+          type="number"
+          placeholder="Número de Cabina"
+          min="1"
+          max="6"
+          value={nuevoVehiculo.numero_cabina}
+          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, numero_cabina: e.target.value })}
+        />
+        <input
+          type="number"
+          step="500"
+          placeholder="Precio"
+          value={nuevoVehiculo.precio}
+          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, precio: e.target.value })}
+        />
+        <input
+          type="date"
+          placeholder="Fecha"
+          value={nuevoVehiculo.fecha}
+          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, fecha: e.target.value })}
+        />
+        <select
+          value={nuevoVehiculo.metodo_pago}
+          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, metodo_pago: e.target.value })}
+        > <option value="">Seleccionar método de pago</option>
+        <option value="efectivo">Efectivo</option>
+        <option value="transferencia">Transferencia Alias: ViaPass</option>
+        <option value="qr">QR</option>
+        {/* <option value="chachos">Chachos</option> */}
+        </select>
+        <button type="submit">Agregar Vehículo</button>
+      </form>
 
-          <h2>Historial de Peajes</h2>
+      <h2>Lista de Vehículos</h2>
+      <button onClick={handlePrint}>Imprimir Historial</button>
+      <div>
+        <input
+          type="date"
+          placeholder="Filtrar por día"
+          onChange={(e) => setFilter({ ...filter, dia: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Filtrar Historial"
+          onChange={(e) => setFilter({ ...filter, mes: e.target.value })}
+        />
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Patente</th>
+            <th>Tipo de Vehículo</th>
+            <th>Número de Cabina</th>
+            <th>Precio</th>
+            <th>Fecha</th>
+            <th>Método de Pago</th>
+          </tr>
+        </thead>
+            {/* <td>
+            {editItem?.id_historial === item.id_historial ? (
+                  <button onClick={() => handleEdit(item)}>Editar</button>
+                ):
+                <button onClick={() => handleDelete(item.id_historial)}>Eliminar</button>
+              }
+            </td> */}
+        <tbody>
+          {vehiculos.map((vehiculo) => (
+            <tr key={vehiculo.id_vehiculos}>
+              <td>{vehiculo.id_vehiculos}</td>
+              <td>{vehiculo.patente}</td>
+              <td>{vehiculo.tipo_vehiculo}</td>
+              <td>{vehiculo.numero_cabina || "x"}</td>
+              <td>{vehiculo.precio || "x"}</td>
+              <td>{vehiculo.fecha || "x"}</td>
+              <td>{vehiculo.metodo_pago || "x"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* 
+      <h2>Historial de Peajes</h2>
       <button onClick={handlePrint}>Imprimir Historial</button>
 
       <div>
@@ -125,33 +210,29 @@ const SistemaPeaje = () => {
               <td>{item.cabina}</td>
               <td>{item.patente}</td>
               <td>{item.username}</td>
-              <td>
-                {editItem?.id_historial === item.id_historial ? (
-                  <input
-                    type="number"
-                    value={editItem.monto_pagado}
-                    onChange={(e) => setEditItem({ ...editItem, monto_pagado: e.target.value })}
-                  />
-                ) : (
-                  item.monto_pagado
-                )}
-              </td>
-              <td>
-                {editItem?.id_historial === item.id_historial ? (
-                  <select
-                    value={editItem.metodo_pago}
-                    onChange={(e) => setEditItem({ ...editItem, metodo_pago: e.target.value })}
-                  >
-                    <option value="efectivo">Efectivo</option>
-                    <option value="transferencia">Transferencia</option>
-                    <option value="qr">QR</option>
-                    <option value="cheques">Cheques</option>
-                    <option value="criptomonedas">Criptomonedas</option>
-                  </select>
-                ) : (
-                  item.metodo_pago
-                )}
-              </td>
+              <td>{editItem?.id_historial === item.id_historial ? (
+                <input
+                  type="number"
+                  value={editItem.monto_pagado}
+                  onChange={(e) => setEditItem({ ...editItem, monto_pagado: e.target.value })}
+                />
+              ) : (
+                item.monto_pagado
+              )}</td>
+              <td>{editItem?.id_historial === item.id_historial ? (
+                <select
+                  value={editItem.metodo_pago}
+                  onChange={(e) => setEditItem({ ...editItem, metodo_pago: e.target.value })}
+                >
+                  <option value="efectivo">Efectivo</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="qr">QR</option>
+                  <option value="cheques">Cheques</option>
+                  <option value="criptomonedas">Criptomonedas</option>
+                </select>
+              ) : (
+                item.metodo_pago
+              )}</td>
               <td>
                 {editItem?.id_historial === item.id_historial ? (
                   <button onClick={() => saveEdit(item.id_historial)}>Guardar</button>
@@ -164,10 +245,13 @@ const SistemaPeaje = () => {
           ))}
         </tbody>
       </table>
+      */}
     </div>
   );
 };
+
 export default SistemaPeaje;
+
 
 
 // import { useState, useEffect } from "react";
@@ -207,6 +291,9 @@ export default SistemaPeaje;
 //     fetchHistorial();
 //     setNuevoPeaje({ id_cabina: "", id_vehiculo: "", monto_pagado: "" });
 //   };
+// const handlePrint = () => {
+//   window.print();
+// };
 
 //   return (
 //     <div>
@@ -320,19 +407,19 @@ export default SistemaPeaje;
 //     alert('¡Barrera habilitada!');
 //   };
 
-//   const imprimirDato = (dato) => {
-//     console.log('Imprimiendo datos:', dato);
-//     alert(`Datos del vehículo: \nTipo: ${dato.tipo}\nPrecio: ${dato.precio}\nMétodo de Pago: ${dato.metodoPago}\nTotal: ${dato.total}`);
-//   };
+  // const imprimirDato = (dato) => {
+  //   console.log('Imprimiendo datos:', dato);
+  //   alert(`Datos del vehículo: \nTipo: ${dato.tipo}\nPrecio: ${dato.precio}\nMétodo de Pago: ${dato.metodoPago}\nTotal: ${dato.total}`);
+  // };
 
-//   const salirInicio = () => {
-//     window.location.href = '/';
-//   };
+  // const salirInicio = () => {
+  //   window.location.href = '/';
+  // };
 
-//   const cerrarSesion = () => {
-//     alert('Sesión cerrada.');
-//     window.location.href = '/login';
-//   };
+  // const cerrarSesion = () => {
+  //   alert('Sesión cerrada.');
+  //   window.location.href = '/login';
+  // };
 
 //   return (
 //     <div className="sistema-peaje">
