@@ -1,6 +1,6 @@
 // import React from 'react'; //version +17  npm list react     
 import { useState } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../services/Auth";
 
@@ -24,6 +24,7 @@ const LoginPage = () => {
       // Guardar el token en el almacenamiento local
       localStorage.setItem('token', response.data.token);
       setError(null);
+      
       //pagina del sistema de peaje
       alert(`Bienvenido ${username} al sistema de peaje`);
       navigate('/sistemapeaje'); // Redirige a la página de inicio o dashboard
@@ -79,15 +80,14 @@ const LoginPage = () => {
         <button type="submit">Ingresar</button>
       </form>
 
-      <div style={{ marginTop: '20px' }}>
-        <p>¿No tienes una cuenta?</p>
-        <button 
-          onClick={registarUsuario} 
-          style={{ color: 'blue', textDecoration: 'underline' }}
-        >
+      
+      <div className="crear-cuenta-container">
+        <p className="crear-cuenta-text">¿No tienes una cuenta?</p>
+        <button onClick={registarUsuario} className="crear-cuenta-boton">
           Crear una cuenta
         </button>
       </div>
+
     </div>
   );
 };
