@@ -22,11 +22,11 @@ El proyecto, desarrollado por el Grupo N° 8, con enfoque en la creación de un 
     npm run dev
 ```
 
-# integrantes - Dev-Squad
+# Integrantes - Dev-Squad
 * David Ramirez - [@Chavow5](https://www.github.com/chavow5)
 * Celeste Orellano
 * Alejandro Romero
-* Cecilia Bolado
+* Cecilia Bolado - [@cecibolado](http://www.github.com/cecibolado)
 
 ## Esctructura de Carpeta
 ```bash
