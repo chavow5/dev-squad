@@ -1,2 +1,0 @@
-falta mejorar la pagina de sistema peaje que se pueda cargar los datos de la db y conectarla para que muestre el historial
-

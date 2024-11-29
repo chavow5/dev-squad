@@ -1,0 +1,153 @@
+/* General */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h2, h3 {
+    color: #333;
+    text-align: center;
+  }
+  
+  button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  form h3 {
+    margin-bottom: 15px;
+  }
+  
+  section.sistema-peaje-controls-login {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  table th,
+  table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  table th {
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  table td button {
+    background-color: #28a745;
+    margin: 5px;
+  }
+  
+  table td button:hover {
+    background-color: #218838;
+  }
+  
+  table td button:last-child {
+    background-color: #dc3545;
+  }
+  
+  table td button:last-child:hover {
+    background-color: #c82333;
+  }
+  
+  input[type="text"]::placeholder,
+  input[type="number"]::placeholder,
+  select::placeholder {
+    color: #aaa;
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  select:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  
+  /* Filtros */
+  h3 {
+    margin-top: 20px;
+  }
+  
+  input[type="text"] {
+    width: calc(100% - 120px);
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  select {
+    width: calc(33% - 10px);
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .sistema-peaje-controls-login {
+      text-align: center;
+      flex-direction: column;
+    }
+  
+    table, form {
+      font-size: 14px;
+    }
+  
+    table th, table td {
+      padding: 8px;
+    }
+  
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+      width: 100%;
+    }
+  
+    button {
+      width: 100%;
+    }
+  }
+  
