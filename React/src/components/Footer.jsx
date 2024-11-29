@@ -16,7 +16,7 @@ const Footer = () => (
           <li><a href="/sistemapeaje" className="footer-link">Sistema Peaje</a></li>
         </ul>
       </nav>
-      
+      <br />
       {/* redes sociales */}
       <div className="footer-social">
         <a href="https://github.com/chavow5/dev-squad" target="_blank" rel="noopener noreferrer" className="footer-social-link">Github Proyecto</a>
