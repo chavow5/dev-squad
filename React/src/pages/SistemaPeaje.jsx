@@ -50,7 +50,7 @@ const SistemaPeaje = () => {
         alert("Vehículo actualizado correctamente");
       } catch (error) {
         console.error("Error al actualizar el vehículo", error);
-        alert("Error al actualizar el vehículo");
+        alert("Error al actualizar el vehículo o faltan datos");
       }
     } else {
       // Agregar vehículo
@@ -96,6 +96,12 @@ const SistemaPeaje = () => {
       (!filter.metodo_pago || vehiculo.metodo_pago === filter.metodo_pago)
     );
   });
+
+  //total
+  const totalPrecio = filteredVehiculos.reduce(
+    (acc, vehiculo) => acc + (parseFloat(vehiculo.precio) || 0),
+    0
+  );
 
   //imprimir en pdf
   const handlePrint = () => {
@@ -194,6 +200,7 @@ const SistemaPeaje = () => {
       </select>
 
       <button onClick={handlePrint}>Imprimir Historial</button>
+      <h3>Total ${totalPrecio.toFixed(2)}</h3>
       <table>
         <thead>
           <tr>
@@ -218,7 +225,7 @@ const SistemaPeaje = () => {
               <td>{vehiculo.precio || "x"}</td>
               <td>{vehiculo.fecha || "x"}</td>
               <td>{vehiculo.metodo_pago || "x"}</td>
-              <td>{vehiculo.usuario || "-"}</td> {/* Mostrar el usuario */}
+              <td>{vehiculo.usuario || ""}</td> {/* Mostrar el usuario */}
               <td>
                 <button onClick={() => handleEdit(vehiculo)}>Editar</button>
                 <button onClick={() => handleDelete(vehiculo.id_vehiculos)}>Eliminar</button>
@@ -227,6 +234,7 @@ const SistemaPeaje = () => {
           ))}
         </tbody>
       </table>
+      
     </div>
   );
 };
