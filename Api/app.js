@@ -5,6 +5,7 @@ import authRouter from "./auth.js";
 import usuariosRouter from "./usuarios.js";
 import vehiculosRouter from "./vehiculos.js"; 
 import historialRouter from "./historial.js";
+import cabinasRouter from "./cabinas.js"
 
 // Conectar a DB
 conectarDB();
@@ -32,6 +33,9 @@ app.use("/vehiculos", vehiculosRouter);
 
 // Ruta Historial
 app.use("/historial", historialRouter);
+
+//Ruta Cabinas
+app.use("/cabinas", cabinasRouter);
 
 app.listen(port, () => {
   console.log(`La aplicación está funcionando en: http://localhost:${port}`);

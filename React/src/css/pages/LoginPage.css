@@ -66,12 +66,13 @@ button[type="submit"]:active {
   padding: 12px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #0efc12;
+  background-color: #003f7f;
   color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  transform: scale(1);
 }
 
 crear-cuenta-boton:hover {
@@ -102,4 +103,5 @@ p[style] {
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
+  text-align: center;
 }

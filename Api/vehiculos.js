@@ -9,7 +9,13 @@ const router = express.Router();
 // GET /vehiculos - Obtener todos los vehículos
 router.get("/", async (req, res) => {
   try {
-    const [vehiculos] = await db.execute("SELECT * FROM vehiculos");
+    const [vehiculos] = await db.execute(`
+      SELECT vehiculos.*, 
+             usuarios.username AS usuario 
+      FROM vehiculos
+      LEFT JOIN historial ON vehiculos.id_vehiculos = historial.id_vehiculo
+      LEFT JOIN usuarios ON historial.id_usuario = usuarios.id_usuario
+    `);
     res.send({ vehiculos });
   } catch (error) {
     console.error(error);
@@ -22,9 +28,15 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const [vehiculo] = await db.execute(
-      "SELECT * FROM vehiculos WHERE id_vehiculos = ?",
-      [id]
-    );
+      // "SELECT * FROM vehiculos WHERE id_vehiculos = ?",
+      `
+      SELECT vehiculos.*, 
+             usuarios.username AS usuario 
+      FROM vehiculos
+      LEFT JOIN historial ON vehiculos.id_vehiculos = historial.id_vehiculo
+      LEFT JOIN usuarios ON historial.id_usuario = usuarios.id_usuario
+      WHERE vehiculos.id_vehiculos = ?
+    `, [id]);
     if (vehiculo.length === 0) {
       return res.status(404).send({ message: "Vehículo no encontrado" });
     }

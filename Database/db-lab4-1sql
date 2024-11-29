@@ -151,7 +151,7 @@ CREATE TABLE vehiculos (
   numero_cabina int(11) DEFAULT NULL,
   precio int(11) DEFAULT NULL,
   fecha date DEFAULT curdate(),
-  metodo_pago enum('efectivo','transferencia','qr','cheques','criptomonedas') DEFAULT 'efectivo',
+  metodo_pago enum('efectivo','transferencia','qr','chachos') DEFAULT 'efectivo',
   PRIMARY KEY (id_vehiculos),
   UNIQUE KEY patente_UNIQUE (patente)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
