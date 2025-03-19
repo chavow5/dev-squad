@@ -225,7 +225,7 @@ const SistemaPeaje = () => {
               <td>{vehiculo.precio || "x"}</td>
               <td>{vehiculo.fecha || "x"}</td>
               <td>{vehiculo.metodo_pago || "x"}</td>
-              <td>{vehiculo.usuario || ""}</td> {/* Mostrar el usuario */}
+              <td>{vehiculo.usuario || ""}</td> 
               <td>
                 <button onClick={() => handleEdit(vehiculo)}>Editar</button>
                 <button onClick={() => handleDelete(vehiculo.id_vehiculos)}>Eliminar</button>
