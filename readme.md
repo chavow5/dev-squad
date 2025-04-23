@@ -5,6 +5,13 @@ El proyecto, desarrollado por el Grupo N° 8, con enfoque en la creación de un 
 # Dev-Squad - ViaPass
 ![ViaPass_logo](https://github.com/user-attachments/assets/c9de87ed-3871-41e7-adc9-846144795e0a)
 
+# Screenshots
+![inicio](https://github.com/user-attachments/assets/839030a6-3cbf-4d1d-9d4a-50c071a5c390)
+![login](https://github.com/user-attachments/assets/cd27ac20-019b-4779-ba2d-24368acceb71)
+![sistema](https://github.com/user-attachments/assets/eb01c236-04ec-44cf-a8c7-3704377b8fdd)
+
+
+
 
 # Running Test  
  `API`
