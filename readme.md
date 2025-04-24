@@ -10,9 +10,6 @@ El proyecto, desarrollado por el Grupo N° 8, con enfoque en la creación de un 
 ![login](https://github.com/user-attachments/assets/cd27ac20-019b-4779-ba2d-24368acceb71)
 ![sistema](https://github.com/user-attachments/assets/eb01c236-04ec-44cf-a8c7-3704377b8fdd)
 
-
-
-
 # Running Test  
  `API`
  ```bash
@@ -28,8 +25,6 @@ El proyecto, desarrollado por el Grupo N° 8, con enfoque en la creación de un 
 
 # Integrantes - Dev-Squad
 * David Ramirez - [@Chavow5](https://www.github.com/chavow5)
-* Celeste Orellano
-* Alejandro Romero
 * Cecilia Bolado - [@cecibolado](http://www.github.com/cecibolado)
 
 ## Esctructura de Carpeta
